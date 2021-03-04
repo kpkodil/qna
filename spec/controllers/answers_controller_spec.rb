@@ -8,6 +8,7 @@ RSpec.describe AnswersController, type: :controller do
 
     it 'renders new view' do
       get :new, params: { question_id: question }
+
       expect(response).to render_template :new
     end
   end
@@ -15,8 +16,8 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
     
     it 'associated with question' do
-      answer =  create(:answer, question: question)
-      expect(question).to eq answer.question
+      post :create, params: valid_answer_params
+      expect(assigns(:answer).question).to eq question
     end
 
     context 'with valid attributes' do
