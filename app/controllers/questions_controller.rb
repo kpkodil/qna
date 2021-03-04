@@ -7,12 +7,10 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    question
+    @answer = Answer.new
   end
 
-  def new
-    question
-  end
+  def new;end
 
   def edit;end 
 
