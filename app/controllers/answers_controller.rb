@@ -6,11 +6,12 @@ class AnswersController < ApplicationController
   end
 
   def create
+    authenticate_user!
     @answer = question.answers.build(answer_params)
-    if @answer.save
-      redirect_to @answer
+    if @answer.save  
+      redirect_to question
     else
-      render :new
+      render 'questions/show'
     end
   end
 
