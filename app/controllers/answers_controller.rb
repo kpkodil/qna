@@ -21,9 +21,11 @@ class AnswersController < ApplicationController
   def destroy
     if current_user.is_resource_author?(answer)
       answer.destroy
-      redirect_to answer.question, notice: "Answer was successfully destroyed."
+      redirect_to answer.question, notice: 'Answer was successfully destroyed.'
     else
-      redirect_to answer.question, notice: "You are not author of this answer!"
+      # flash[:notice] = "You are not author of this answer!"
+      # redirect_to answer.question
+      redirect_to answer.question, notice: 'You are not author of this answer!'
     end
   end
 

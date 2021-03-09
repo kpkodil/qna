@@ -40,16 +40,23 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    before { login(user) }
 
-    it 'delete the answer from the database' do
-      answer = create(:answer, user: user, question: question)
-      expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+    before { login(user) }
+    
+    context 'User is an author of the answer' do
+      
+      it 'delete the answer from the database' do
+        answer = create(:answer, user: user, question: question)
+        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+      end
     end
 
-    it 'prevent deleting answer by not author' do
-      answer = create(:answer, question: question)
-      expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
+    context 'User is not an author of the answer' do
+
+      it 'prevent deleting answer by not author' do
+        answer = create(:answer, question: question)
+        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
+      end
     end
   end
 

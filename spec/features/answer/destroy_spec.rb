@@ -9,20 +9,16 @@ feature 'User can delete his answer for question', %q{
   given!(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
 
-  before { Capybara.current_driver = :selenium }
-
   scenario 'User deletes his own answer' do
     create(:answer, user: user, question: question)
     sign_in(user)
     visit question_path(question)
 
-    click_button 'Delete answer'
-    page.accept_alert
-
+    click_on 'Delete answer'
     expect(page).to have_content('Answer was successfully destroyed.')
   end
 
-  scenario 'User tries to find delete-button for  another answer' do
+  scenario 'User tries to find delete-button for another answer' do
     create(:answer, question: question)
     sign_in(user)
     visit question_path(question)
