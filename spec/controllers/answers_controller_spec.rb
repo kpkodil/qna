@@ -8,7 +8,7 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'POST #create' do
     
-    before { sign_in(user) }
+    before { login(user) }
 
     it 'associated with question' do
       post :create, params: valid_answer_params
@@ -36,6 +36,20 @@ RSpec.describe AnswersController, type: :controller do
         post :create, params: invalid_answer_params
         expect(response).to render_template('questions/show')
       end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    before { login(user) }
+
+    it 'delete the answer from the database' do
+      answer = create(:answer, user: user, question: question)
+      expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+    end
+
+    it 'prevent deleting answer by not author' do
+      answer = create(:answer, question: question)
+      expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
     end
   end
 
