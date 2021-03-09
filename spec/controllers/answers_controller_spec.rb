@@ -42,11 +42,11 @@ RSpec.describe AnswersController, type: :controller do
   private 
 
   def valid_answer_params
-    { answer: attributes_for(:answer), question_id: question }
+    { answer: attributes_for(:answer), question_id: question, user_id: user }
   end
 
   def invalid_answer_params
-    { answer: attributes_for(:answer, :invalid), question_id: question }
+    { answer: attributes_for(:answer, :invalid), question_id: question, user_id: user }
   end
 
 end

@@ -7,7 +7,8 @@ class AnswersController < ApplicationController
 
   def create
     authenticate_user!
-    @answer = question.answers.build(answer_params)
+    @answer = current_user.answers.build(answer_params)
+    @answer.question = question
     if @answer.save  
       redirect_to question
     else
