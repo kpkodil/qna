@@ -33,8 +33,12 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    question.destroy
-    redirect_to questions_path
+    if current_user.is_resource_author?(question)
+      question.destroy
+      redirect_to questions_path, notice: "Question was successfully destroyed."
+    else
+      redirect_to questions_path, notice: "You are not author of this Question!"
+    end
   end
 
   private
