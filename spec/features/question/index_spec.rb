@@ -6,10 +6,12 @@ feature 'User can view question list', %q{
   I'd like to be able to view question list
 } do
 
+  let(:user) { create(:user) }
+  let!(:questions) { create_list(:question, 2, user: user) }
+
   scenario 'Any users can view questions list' do
     visit questions_path
 
-    expect(page).to have_content "Questions list"
-    expect(page).to have_content "Title"
+    expect(page).to have_content("Title").thrice
   end
 end

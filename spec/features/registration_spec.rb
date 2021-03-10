@@ -27,6 +27,6 @@ feature 'User can sign up', %q{
     fill_in 'Password confirmation', with: attributes_for(:user)[:password]
     click_button 'Sign up'
     
-    expect(page).to have_content ('error' || 'errors')
+    expect(page).to have_content 'error' || 'errors'
   end
 end

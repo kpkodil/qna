@@ -5,13 +5,13 @@ feature 'Authenticated user can  answer current question', %q{
 } do
   given!(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
-  given!(:answers) { create_list(:answer, 3,  user: user, question: question ) }
+  given!(:answers) { create_list(:answer, 2,  user: user, question: question ) }
 
   scenario 'User can answer the question' do
     sign_in(user)
 
     visit question_path(question)
 
-    expect(page).to have_content("AnswerBody").thrice
+    expect(page).to have_content("Body").thrice
   end
 end

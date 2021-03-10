@@ -20,15 +20,15 @@ feature 'User can create answer for question', %q{
       fill_in 'answer_body', with: 'Answer'
       click_on 'Answer the question'
     
-      expect(page).to have_content('Your answer')
-      expect(page).to have_button('Answer the question')
+      expect(page).to have_content 'Your answer'
+      expect(page).to have_button 'Answer the question'
     end
 
     scenario 'creates answer with invalid params' do
       fill_in 'answer_body', with: ''
       click_on 'Answer the question'
       
-      expect(page).to have_content('error(s)')
+      expect(page).to have_content 'error(s)'
     end 
   end
   
@@ -38,6 +38,6 @@ feature 'User can create answer for question', %q{
     fill_in 'answer_body', with: 'Answer'
     click_on 'Answer the question'
     
-    expect(page).to have_current_path(new_user_session_path)    
+    expect(page).to have_current_path new_user_session_path
   end
 end
