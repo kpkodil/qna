@@ -1,4 +1,4 @@
 ul 
   li= answer.body
-  - if current_user&.is_resource_author?(answer)
+  - if current_user&.resource_author?(answer)
     = link_to 'Delete answer', answer_path(answer), method: :delete, data: { confirm: 'Are you sure?' } 

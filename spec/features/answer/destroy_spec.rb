@@ -18,11 +18,11 @@ feature 'User can delete his answer for question', %q{
     expect(page).to have_content('Answer was successfully destroyed.')
   end
 
-  scenario 'User tries to find delete-button for another answer' do
+  scenario 'User tries to find delete-link for another answer' do
     create(:answer, question: question)
     sign_in(user)
     visit question_path(question)
 
-    expect(page).to_not have_button('Delete answer')
+    expect(page).to_not have_link('Delete answer')
  end
 end

@@ -3,17 +3,17 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   it { should validate_presence_of :email }
   it { should validate_presence_of :password }
+  
+  let(:author) { create(:user) }
+  let(:user) { create(:user) }
+  let(:question) { create(:question, user: author) }
+  let(:answer) { create(:answer,  user: author, question: question ) }
 
-  it "Can be owner of resource" do
-    author = create(:user)
-    user = create(:user)
-    question = create(:question, user: author)
-    answer = create(:answer, user: author, question: question)
+  it "Author is an owner of resource" do
+    expect(author).to be_resource_author(question)
+  end
 
-    expect(author.is_resource_author?(question)).to be_truthy
-    expect(author.is_resource_author?(answer)).to be_truthy
-
-    expect(user.is_resource_author?(question)).to be_falsey
-    expect(user.is_resource_author?(answer)).to be_falsey
+  it "User is not an owner of resource" do
+    expect(user).not_to be_resource_author(question)
   end
 end

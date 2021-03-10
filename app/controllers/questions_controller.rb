@@ -1,7 +1,8 @@
 class QuestionsController < ApplicationController
 
-  before_action :authenticate_user!, except: %i[index show]
+  before_action :authenticate_user!, except: %i[index show create update deestroy ]
   before_action :question, only: %i[show new update destroy]
+
   def index
     @questions = Question.all
   end
@@ -33,7 +34,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if current_user.is_resource_author?(question)
+    if current_user.resource_author?(question)
       question.destroy
       redirect_to questions_path, notice: "Question was successfully destroyed."
     else
