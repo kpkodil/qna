@@ -9,7 +9,7 @@ feature 'User can create answer for question', %q{
   given(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user', js: true do
 
     background do
       sign_in(user)
@@ -27,7 +27,7 @@ feature 'User can create answer for question', %q{
     scenario 'creates answer with invalid params' do
       fill_in 'answer_body', with: ''
       click_on 'Answer the question'
-      
+
       expect(page).to have_content 'error(s)'
     end 
   end

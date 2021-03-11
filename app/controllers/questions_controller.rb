@@ -2,7 +2,7 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: %i[index show create update deestroy ]
   before_action :question, only: %i[show new update destroy]
-
+  
   def index
     @questions = Question.all
   end

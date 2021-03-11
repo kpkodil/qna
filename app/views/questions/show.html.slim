@@ -1,7 +1,14 @@
 h1= @question.title
 p= @question.body
 
-p= 'Answers:'
-ol= render @question.answers 
+.answers
+  p= 'Answers:'
+  ol= render @question.answers 
+
+.answer-errors
+  = render 'shared/errors', resource: @answer
 
 = render 'answers/new'
+
+
+  

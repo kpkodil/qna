@@ -1,25 +1,21 @@
 class AnswersController < ApplicationController
 
   before_action :authenticate_user!, only: %i[create destroy]
-  before_action :question, only: %i[show new update destroy]
-
+  before_action :question, only: %i[create destroy]
+  before_action :answer, only: %i[create destroy]
 
   def create
     @answer = current_user.answers.build(answer_params)
-    @answer.question = question
-    if @answer.save  
-      redirect_to question
-    else
-      render 'questions/show'
-    end
+    @answer.question = @question
+    @answer.save
   end
 
   def destroy
-    if current_user.resource_author?(answer)
-      answer.destroy
-      redirect_to answer.question, notice: 'Answer was successfully destroyed.'
+    if current_user.resource_author?(@answer)
+      @answer.destroy
+      redirect_to @answer.question, notice: 'Answer was successfully destroyed.'
     else
-      redirect_to answer.question, notice: 'You are not author of this answer!'
+      redirect_to @answer.question, notice: 'You are not author of this answer!'
     end
   end
 
