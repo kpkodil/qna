@@ -1,13 +1,21 @@
 class AnswersController < ApplicationController
 
-  before_action :authenticate_user!, only: %i[create destroy]
+  before_action :authenticate_user!, only: %i[create update destroy]
   before_action :question, only: %i[create destroy]
-  before_action :answer, only: %i[create destroy]
+  before_action :answer, only: %i[update destroy]
 
   def create
     @answer = current_user.answers.build(answer_params)
     @answer.question = @question
     @answer.save
+  end
+
+  def edit
+    
+  end
+
+  def update
+    @answer.update(answer_params)
   end
 
   def destroy
