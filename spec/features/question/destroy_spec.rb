@@ -8,30 +8,27 @@ feature 'User can delete his question', %q{
 
   given!(:author) {create(:user) }
   given!(:user) { create(:user) }
+  given!(:question) { create(:question, user: author) }
 
   scenario 'Author deletes his own question' do
-    create(:question, user: author)
     sign_in(author)
     visit questions_path
 
     click_on 'Delete question'
 
-    expect(page).to have_content 'Question was successfully destroyed.'
+    expect(page).to_not have_content question.title
   end
 
   scenario 'Authenticated user tries to find delete-link for another question' do
-    create(:question, user: author)
     sign_in(user)
     visit questions_path
 
     expect(page).to_not have_link 'Delete question'
   end
 
-  scenario 'Unauthenticated user tries to find delete-link for any question' do
-    create(:question, user: author)
-    
+  scenario 'Unauthenticated user tries to find delete-link for any question' do    
     visit questions_path
 
     expect(page).to_not have_link 'Delete question'
- end
+  end
 end

@@ -11,7 +11,9 @@ feature 'User can view question list', %q{
 
   scenario 'Any users can view questions list' do
     visit questions_path
-
-    expect(page).to have_content("Title").thrice
+    
+    questions.each do |q|
+      expect(page).to have_content q.title
+    end
   end
 end

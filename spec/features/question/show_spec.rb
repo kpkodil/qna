@@ -12,6 +12,8 @@ feature 'Authenticated user can  answer current question', %q{
 
     visit question_path(question)
 
-    expect(page).to have_content("Body").thrice
+    answers.each do |ans|
+      expect(page).to have_content ans.body
+    end
   end
 end

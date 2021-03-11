@@ -131,6 +131,11 @@ RSpec.describe QuestionsController, type: :controller do
       it 'prevent deleting question by not author' do
         expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
       end
+
+      it 'redirects to show' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to question_path(question)
+      end
     end
   end
 end
