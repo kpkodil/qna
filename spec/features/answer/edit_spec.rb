@@ -18,7 +18,7 @@ feature 'User can his answer', %q{
 
   describe 'Authenticated user', js: true do
 
-    context 'deletes his answer' do
+    context 'edits his answer' do
       
       before do
         sign_in(author)

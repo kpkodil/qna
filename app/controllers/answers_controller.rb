@@ -10,21 +10,12 @@ class AnswersController < ApplicationController
     @answer.save
   end
 
-  def edit
-    
-  end
-
   def update
-    @answer.update(answer_params)
+    @answer.update(answer_params) if current_user.resource_author?(@answer)
   end
 
   def destroy
-    if current_user.resource_author?(@answer)
-      @answer.destroy
-      redirect_to @answer.question, notice: 'Answer was successfully destroyed.'
-    else
-      redirect_to @answer.question, notice: 'You are not author of this answer!'
-    end
+    @answer.destroy if current_user.resource_author?(@answer)
   end
 
   private
