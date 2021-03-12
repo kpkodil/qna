@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-feature 'User can his answer', %q{
+feature 'User can edit his answer', %q{
   In order to correct mistakes
-  as an author of anser
+  as an author of anwser
   I'd like to be able to edit my answer
 } do
   given!(:author) { create(:user) }

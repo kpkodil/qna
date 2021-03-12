@@ -1,7 +1,9 @@
-h1= 'Questions list'
-table
-  tr 
-    th= 'Titles:'
-  = render @questions
+h1= 'Questions list' 
+
+.questions
+  p= 'Titles:'
+  ol= render @questions
+
+.questions-errors
 
 p= link_to 'Ask question', new_question_path

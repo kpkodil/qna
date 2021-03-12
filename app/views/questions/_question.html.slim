@@ -1,4 +1,16 @@
-tr
-  td= link_to ("#{question.title}"), question_path(question)
-  - if current_user&.resource_author?(question)
-    = link_to 'Delete question', question_path(question), method: :delete, data: { confirm: 'Are you sure?' } 
+- if question.persisted?
+  div data-question-id="#{question.id}" 
+    b= link_to ("#{question.title}"), question_path(question)
+
+    div data-question-errors="#{question.id}"
+
+    - if current_user&.resource_author?(question)
+      br=link_to 'Delete answer', question_path(question), method: :delete
+      = link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
+      br= form_with model: question, class: "hidden", html: { id: "edit-question-#{question.id}" }, local: false do |f|
+        br= f.label 'Edit title' 
+        = f.text_area :title, id: :question_title
+        br= f.label 'Edit body' 
+        = f.text_area :body, id: :question_body
+        br= f.submit 'Save'
+        
