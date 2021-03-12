@@ -6,8 +6,6 @@ p= @question.body
   ol= render @question.answers 
 
 .answer-errors
-  = render 'shared/errors', resource: @answer
-
 = render 'answers/new'
 
 
