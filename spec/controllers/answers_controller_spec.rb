@@ -4,7 +4,7 @@ RSpec.describe AnswersController, type: :controller do
 
   let(:user) {create(:user) }
   let(:author) { create(:user) }
-  let(:question) { create(:question, user: user) }
+  let(:question) { create(:question, user: author) }
 
   describe 'POST #create' do
     
@@ -104,6 +104,44 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #make_the_best' do
+    let!(:answer) { create(:answer, user: author, question: question) }
+
+    context 'User is an author of the question' do
+
+      before do 
+        login(author) 
+        patch :make_the_best, params: { id: answer }, format: :js
+      end
+
+      it 'sets the best answer' do
+        answer.reload
+        expect(answer.best).to eq true   
+      end
+
+      it 'renders update view' do
+        expect(response).to render_template :make_the_best
+      end
+    end
+
+    context 'User is a non-author of the question' do
+      
+      before do 
+        login(user) 
+        patch :make_the_best, params: { id: answer }, format: :js
+      end
+
+      it 'prevent making answer the best by non-author of question' do
+        answer.reload
+        expect(answer.best).to eq false  
+      end
+
+      it 're-renders make_the_best view' do
+        expect(response).to render_template :make_the_best
+      end
+    end
+  end  
 
   private 
 

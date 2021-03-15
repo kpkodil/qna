@@ -1,0 +1,2 @@
+class BestAnswer < Answer
+end

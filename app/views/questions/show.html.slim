@@ -1,9 +1,19 @@
 h1= @question.title
 p= @question.body
 
+HR
+="Best answer:"
+- if @question.best_answer.present?
+  div class="best-answer" 
+    = render @question.best_answer
+- else
+  div class="best-answer"   
+    br= "Question author is not choose the bes answer yet"
+HR
+
 .answers
-  p= 'Answers:'
-  ol= render @question.answers 
+  = 'Answers:'
+  = render @question.answers.where(best: false) 
 
 .answer-errors
 = render 'answers/new'

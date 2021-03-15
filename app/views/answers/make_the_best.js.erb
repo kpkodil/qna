@@ -1,0 +1,11 @@
+
+<% if @prev_best_answer.present? %>
+  $("[data-answer-id=" + <%= @answer.id %> + "]").remove()
+  $(".best-answer").html('<%= j (render @answer ) %>')
+  $("[data-answer-id=" + <%= @prev_best_answer.id %> + "]").remove()
+  $(".answers").append('<%= j (render @prev_best_answer) %>')
+<% else %>
+  $("best-answer").remove()
+  $("[data-answer-id=" + <%= @answer.id %> + "]").remove()
+  $(".best-answer").html('<%= j (render @answer ) %>')
+<% end %>
