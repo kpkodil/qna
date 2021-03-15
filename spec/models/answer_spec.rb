@@ -11,10 +11,11 @@ RSpec.describe Answer, type: :model do
   let(:author) { create(:user) }
   let(:question) { create(:question, user: author) }
 
-  it 'is the question best answer while self best is equal to true' do
-    answer = create(:answer, best: true, user: author, question: question)
+  it "makes answer the best by method 'make_the_best'" do
+    answer = create(:answer, user: author, question: question)    
+    answer.make_the_best
 
-    expect(question.best_answer).to eq answer
+    expect(answer.best).to eq true
   end
 
   it 'can be only one best answer in this question' do

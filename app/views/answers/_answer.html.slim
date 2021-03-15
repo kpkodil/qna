@@ -3,7 +3,7 @@
     p= answer.body
     div data-answer-errors="#{answer.id}"
     
-    - if answer.best != true && current_user&.resource_author?(answer.question)
+    - if !answer.best? && current_user&.resource_author?(answer.question)
       br= link_to 'Make the best', make_the_best_answer_path(answer), remote: true, method: :patch      
 
     - if current_user&.resource_author?(answer)
