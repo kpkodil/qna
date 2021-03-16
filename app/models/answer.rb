@@ -18,7 +18,7 @@ class Answer < ApplicationRecord
   end
 
   def best_answers_count
-    if question.present? && question.answers.where(best: true).count >= 1 && best?
+    if question.present? && question.answers.where(best: true).count >= 1 && best? && question.best_answer != self
       errors.add(:best, "It must be only one best answer for any question.")
     end
   end
