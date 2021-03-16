@@ -143,6 +143,48 @@ RSpec.describe AnswersController, type: :controller do
     end
   end  
 
+  describe 'PATCH#delete_attached_file' do
+
+    let(:answer) { create(:answer, user: author, question: question) }
+
+    before do
+      answer.files.attach(  io: File.open("#{Rails.root}/spec/rails_helper.rb"),
+                            filename: 'rails_helper.rb'
+                          )
+    end 
+
+    context 'User is an author of the answer' do
+
+      before { login(author) }
+
+      it 'deletes answer attached file' do
+        answer.reload
+        expect { patch :delete_attached_file, params: { id: answer, file_id: answer.files.all.first }, format: :js }.to change(answer.files.all, :count).by(-1)
+      end
+
+      it 'renders delete_attached_file view' do
+        patch :delete_attached_file, params: { id: answer, file_id: answer.files.all.first }, format: :js 
+
+        expect(response).to render_template :delete_attached_file
+      end
+    end
+
+    context 'User is a non-author of the answer' do
+      
+      before { login(user) }
+
+      it ' tries to delete answer attached file' do
+        expect { patch :delete_attached_file, params: { id: answer, file_id: answer.files.all.first }, format: :js }.to_not change(answer.files.all, :count)
+      end
+
+      it 're-renders delete_attached_file view' do
+        patch :delete_attached_file, params: { id: answer, file_id: answer.files.all.first }, format: :js 
+
+        expect(response).to render_template :delete_attached_file
+      end
+    end
+  end
+
   private 
 
   def valid_answer_params

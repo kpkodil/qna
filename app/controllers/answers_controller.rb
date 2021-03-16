@@ -2,7 +2,7 @@ class AnswersController < ApplicationController
 
   before_action :authenticate_user!, only: %i[create update destroy]
   before_action :question, only: %i[create destroy]
-  before_action :answer, only: %i[update destroy make_the_best]
+  before_action :answer, only: %i[update destroy make_the_best delete_attached_file]
 
   def create
     @answer = current_user.answers.build(answer_params)
@@ -23,6 +23,11 @@ class AnswersController < ApplicationController
     @answer.make_the_best if current_user&.resource_author?(@answer.question)
   end
 
+  def delete_attached_file
+    @file_id = params[:file_id]
+    delete_resource_attached_file(@answer, @file_id) if current_user&.resource_author?(@answer)
+  end 
+
   private
 
   def answer
@@ -38,6 +43,6 @@ class AnswersController < ApplicationController
   helper_method :question
 
   def answer_params
-    params.require(:answer).permit(:body, files: [])
+    params.require(:answer).permit(:body, :file_id, files: [])
   end
 end
