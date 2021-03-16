@@ -148,14 +148,26 @@ RSpec.describe QuestionsController, type: :controller do
       it 'deletes attached file in question' do
         expect { patch :delete_attached_file, params: { id: question, file_id: question.files.all.first }, format: :js }.to change(question.files.all, :count).by(-1)
       end
+
+      it 'renders delete_attached_file view' do
+        patch :delete_attached_file, params: { id: question, file_id: question.files.all.first }, format: :js 
+
+        expect(response).to render_template :delete_attached_file
+      end
     end
 
     context 'User is a non-author of the question' do
       
       before { login(user) }
 
-      it 'deletes attached file in question' do
+      it 'tries to delete attached file in question' do
         expect { patch :delete_attached_file, params: { id: question, file_id: question.files.all.first }, format: :js }.to_not change(question.files.all, :count)
+      end
+
+      it 're-renders delete_attached_file view' do
+        patch :delete_attached_file, params: { id: question, file_id: question.files.all.first }, format: :js 
+
+        expect(response).to render_template :delete_attached_file
       end
     end
   end
