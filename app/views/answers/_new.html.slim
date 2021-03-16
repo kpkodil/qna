@@ -1,4 +1,8 @@
 = form_with model: [ @question, @answer ], class: 'new-answer',local: false do |f|
-  br= f.label 'Your answer'
-  = f.text_area :body, id: :answer_body
-  br= f.submit 'Answer the question'
+  p
+    = f.label 'Your answer'
+    = f.text_area :body, id: :answer_body
+  p
+    = f.label :files
+    = f.file_field :files, multiple: true
+  p= f.submit 'Answer the question'
