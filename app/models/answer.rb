@@ -9,8 +9,8 @@ class Answer < ApplicationRecord
   def make_the_best
     Answer.transaction do
       unless best?
-        question.answers.update_all best: false
-        update! best: true
+        question.answers.update_all(best: false)
+        update!(best: true)
       end
     end
   end

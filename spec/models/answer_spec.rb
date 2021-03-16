@@ -11,18 +11,28 @@ RSpec.describe Answer, type: :model do
   let(:author) { create(:user) }
   let(:question) { create(:question, user: author) }
 
-  it "makes answer the best by method 'make_the_best'" do
-    answer = create(:answer, user: author, question: question)    
-    answer.make_the_best
+  describe "'make_the_best' method " do
+    
+    let!(:answer1) { create(:answer, best: true, user: author, question: question) }
+    let!(:answer2) { create(:answer, user: author, question: question) }
 
-    expect(answer.best).to eq true
-  end
+    it "makes answer the best" do
+      answer2.make_the_best
 
-  it 'can be only one best answer in this question' do
-    answer1 = create(:answer, best: true, user: author, question: question)
-    answer2 = create(:answer, user: author, question: question) 
+      expect(answer2).to be_best
+    end
 
-    answer2.update  best: true
-    expect(question.answers.where(best: true).count).to eq 1
+    it 'set only one best answer in this question' do 
+      answer2.update(best: true)
+
+      expect(question.answers.where(best: true).count).to eq 1
+    end
+
+    it 'change first best answer for question to non-best' do
+      answer2.make_the_best
+      answer1.reload
+
+      expect(answer1).to_not be_best
+    end
   end
 end
