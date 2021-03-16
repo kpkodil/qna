@@ -12,5 +12,7 @@
         = f.text_area :title, id: :question_title
         br= f.label 'Edit body' 
         = f.text_area :body, id: :question_body
+        br= f.label :files 
+        = f.file_field :files, multiple: true
         br= f.submit 'Save'
         
