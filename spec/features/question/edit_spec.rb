@@ -24,7 +24,7 @@ feature 'User can edit his question', %q{
         visit questions_path
       end
 
-      scenario 'without errors' do      
+      scenario 'without errors' do 
         click_on 'Edit'
 
         within '.questions' do
@@ -65,6 +65,18 @@ feature 'User can edit his question', %q{
 
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
+      end
+
+      scenario 'with deleting any attached file' do
+        question.files.attach(  io: File.open("#{Rails.root}/spec/rails_helper.rb"),
+                                filename: 'rails_helper.rb'
+                              )
+        click_on question.title
+        
+        click_button 'Delete file'
+
+        expect(page).to_not have_link 'rails_helper.rb'
+      
       end
     end
 

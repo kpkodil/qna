@@ -1,7 +1,7 @@
 class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: %i[index show create update deestroy ]
-  before_action :question, only: %i[show new update destroy]
+  before_action :question, only: %i[show new update destroy delete_attached_file]
 
   def new;end
 
@@ -36,6 +36,11 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def delete_attached_file
+    @file_id = params[:file_id]
+    delete_resource_attached_file(question, @file_id) if current_user&.resource_author?(@question)
+  end 
+
   private
 
   def question
@@ -45,6 +50,6 @@ class QuestionsController < ApplicationController
   helper_method :question
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [])
+    params.require(:question).permit(:title, :body, :file_id, files: [])
   end
 end

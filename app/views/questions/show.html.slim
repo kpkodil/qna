@@ -1,9 +1,12 @@
 h1= @question.title
 p= @question.body
 
-- if @question.files.attached?
-  - @question.files.each do |file|
-    p= link_to file.filename.to_s, url_for(file), target: :_blank
+.attached-files
+  - if @question.files.attached?
+    - @question.files.each do |file|
+      div data-question-attached-file-id="#{file.id}"  
+        = link_to file.filename.to_s, url_for(file), target: :_blank
+        = button_to 'Delete file', delete_attached_file_question_path(@question, file_id: file.id), remote: true, method: :patch
 
 HR
 ="Best answer:"
