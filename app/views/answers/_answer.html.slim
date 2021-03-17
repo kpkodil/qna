@@ -19,7 +19,7 @@
         br= f.label 'Edit answer' 
         = f.text_area :body, id: :answer_body
         br= f.label :files 
-        = f.file_field :files, multiple: true
+        = f.file_field :files, multiple: true, direct_upload: true
         br= f.submit 'Save'
 
 

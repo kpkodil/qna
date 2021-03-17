@@ -15,11 +15,11 @@ local:
 #   bucket: your_own_bucket
 
 # Remember not to checkin your GCS keyfile to a repository
-# google:
-#   service: GCS
-#   project: your_project
-#   credentials: <%= Rails.root.join("path/to/gcs.keyfile") %>
-#   bucket: your_own_bucket
+google:
+  service: GCS
+  project: qna-project
+  credentials: <%= Rails.root.join("config/secrets/qna-project.json") %>
+  bucket: qna-project-bucket
 
 # Use rails credentials:edit to set the Azure Storage secret (as azure_storage:storage_access_key)
 # microsoft:
@@ -32,3 +32,14 @@ local:
 #   service: Mirror
 #   primary: local
 #   mirrors: [ amazon, google, microsoft ]
+
+  # :type
+  # :project_id
+  # :private_key_id
+  # :private_key
+  # :client_email
+  # :client_id
+  # :auth_uri
+  # :token_uri
+  # :auth_provider_x509_cert_url
+  # :client_x509_cert_url
