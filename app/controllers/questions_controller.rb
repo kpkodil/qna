@@ -36,11 +36,6 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def delete_attached_file
-    @file_id = params[:file_id]
-    delete_resource_attached_file(question, @file_id) if current_user&.resource_author?(@question)
-  end 
-
   private
 
   def question
@@ -50,6 +45,6 @@ class QuestionsController < ApplicationController
   helper_method :question
 
   def question_params
-    params.require(:question).permit(:title, :body, :file_id, files: [])
+    params.require(:question).permit(:title, :body, files: [])
   end
 end

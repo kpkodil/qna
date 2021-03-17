@@ -3,9 +3,9 @@
     p= answer.body
     - if answer.files.attached?
       - answer.files.each do |file|
-        div data-answer-attached-file-id="#{file.id}"
+        div data-attached-file-id="#{file.id}"
           p= link_to file.filename.to_s, url_for(file), target: :_blank
-          = button_to 'Delete file', delete_attached_file_answer_path(answer, file_id: file.id), remote: true, method: :patch
+          = button_to 'Delete file', attachment_path(answer, file_id: file), remote: true, method: :delete
 
     div data-answer-errors="#{answer.id}"
     

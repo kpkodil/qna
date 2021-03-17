@@ -23,11 +23,6 @@ class AnswersController < ApplicationController
     @answer.make_the_best if current_user&.resource_author?(@answer.question)
   end
 
-  def delete_attached_file
-    @file_id = params[:file_id]
-    delete_resource_attached_file(@answer, @file_id) if current_user&.resource_author?(@answer)
-  end 
-
   private
 
   def answer
@@ -43,6 +38,6 @@ class AnswersController < ApplicationController
   helper_method :question
 
   def answer_params
-    params.require(:answer).permit(:body, :file_id, files: [])
+    params.require(:answer).permit(:body, files: [])
   end
 end

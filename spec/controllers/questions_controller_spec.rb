@@ -129,46 +129,4 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
-
-  describe 'PATCH#delete_attached_file' do
-
-    let(:author) {create(:user) }
-    let!(:question) { create(:question, user: author) }
-
-    before do
-      question.files.attach(  io: File.open("#{Rails.root}/spec/rails_helper.rb"),
-                            filename: 'rails_helper.rb'
-                          )
-    end 
-
-    context 'User is an author of the question' do
-
-      before { login(author) }
-
-      it 'deletes attached file in question' do
-        expect { patch :delete_attached_file, params: { id: question, file_id: question.files.all.first }, format: :js }.to change(question.files.all, :count).by(-1)
-      end
-
-      it 'renders delete_attached_file view' do
-        patch :delete_attached_file, params: { id: question, file_id: question.files.all.first }, format: :js 
-
-        expect(response).to render_template :delete_attached_file
-      end
-    end
-
-    context 'User is a non-author of the question' do
-      
-      before { login(user) }
-
-      it 'tries to delete attached file in question' do
-        expect { patch :delete_attached_file, params: { id: question, file_id: question.files.all.first }, format: :js }.to_not change(question.files.all, :count)
-      end
-
-      it 're-renders delete_attached_file view' do
-        patch :delete_attached_file, params: { id: question, file_id: question.files.all.first }, format: :js 
-
-        expect(response).to render_template :delete_attached_file
-      end
-    end
-  end
 end
