@@ -79,16 +79,37 @@ feature 'User can edit his question', %q{
         expect(page).to_not have_link 'rails_helper.rb'
       end
 
-      scenario 'with deleting links' do
-        question.links.build( linkable: question, name: "Example link", url: "http://example.url")
-        question.save
-        question.reload
+      context "via links" do
+        before do
+          question.links.build( linkable: question, name: "Example link", url: "http://example.url")
+          question.save
+          question.reload
+        end
 
-        click_on question.title
-        
-        click_button 'Delete link'
+        scenario 'with deleting links' do
+          click_on question.title
 
-        expect(page).to_not have_link 'Examlple link'
+          click_button 'Delete link'
+
+          expect(page).to_not have_link 'Examlple link'
+        end
+
+        scenario 'with adding another link' do
+          click_on 'Edit'
+
+          click_on 'add link'
+
+          fill_in 'Link name', with: "Example link 2"
+          fill_in 'Url', with: "http://example2.url"
+
+          click_on 'Save'
+
+          click_on question.title
+
+          within '.quesiton-links'
+            expect(page).to_not have_link 'Examlple link'
+            expect(page).to_not have_link 'Examlple link 2'
+        end  
       end
     end
 

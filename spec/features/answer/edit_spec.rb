@@ -93,6 +93,18 @@ feature 'User can edit his answer', %q{
             expect(page).to_not have_link 'Examlple link'
           end
         end
+
+        scenario 'with adding another link' do
+          within '.answers' do
+            click_link 'Edit'
+
+            fill_in 'Link name', with: "Example link 2"
+            fill_in 'Url', with: "http://example2.url"
+
+            click_on 'Save'
+          end
+          expect(page).to_not have_link 'Examlple link 2'
+        end
       end  
     end
 
