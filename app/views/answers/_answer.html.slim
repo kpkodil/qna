@@ -1,11 +1,19 @@
 - if answer.persisted?
   div data-answer-id="#{answer.id}"
     p= answer.body
+
+    .answer-links
+      - if answer.links.present?
+        p Links:
+        ul
+          - answer.links.each do |l|
+            li= link_to l.name, l.url, target: :_blank
+
     - if answer.files.attached?
       - answer.files.each do |file|
         div data-attached-file-id="#{file.id}"
           p= link_to file.filename.to_s, url_for(file), target: :_blank
-          = button_to 'Delete file', attachment_path(answer, file_id: file), remote: true, method: :delete
+          = button_to 'Delete file', attachment_path(answer, file: file), remote: true, method: :delete
 
     div data-answer-errors="#{answer.id}"
     

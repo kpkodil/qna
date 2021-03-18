@@ -3,7 +3,9 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show create update deestroy ]
   before_action :question, only: %i[show new update destroy delete_attached_file]
 
-  def new;end
+  def new
+    @question.links.build
+  end
 
   def index
     @questions = Question.all
@@ -11,7 +13,7 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new
-    @answers = question.answers
+    @answer.links.build
   end
   
   def create
@@ -45,6 +47,7 @@ class QuestionsController < ApplicationController
   helper_method :question
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [])
+    params.require(:question).permit(:title, :body,
+                                      files: [], links_attributes: [:name, :url] )
   end
 end

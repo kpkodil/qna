@@ -12,6 +12,6 @@ class AttachmentsController < ApplicationController
   private
 
   def file
-    @file ||= ActiveStorage::Attachment.find(params[:file_id]) 
+    @file ||= ActiveStorage::Attachment.find(params[:file]) 
   end
 end
