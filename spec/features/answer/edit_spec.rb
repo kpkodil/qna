@@ -76,9 +76,25 @@ feature 'User can edit his answer', %q{
           expect(page).to_not have_link 'rails_helper.rb'
         end
       end
+
+      context ' via links' do
+        before do
+          answer.links.build( linkable: question, name: "Example link", url: "http://example.url")
+          answer.save
+          answer.reload
+
+          visit question_path(question)
+        end
+
+        scenario 'with deleting link' do
+          within '.answer-links' do
+            click_button 'Delete link'
+
+            expect(page).to_not have_link 'Examlple link'
+          end
+        end
+      end  
     end
-
-
 
     scenario "tries to edit either user's answer" do
       sign_in(user)

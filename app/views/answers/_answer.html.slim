@@ -7,10 +7,13 @@
         p Links:
         ul
           - answer.links.each do |l|
-            - if l.a_gist?
-              script src="#{l.url}.js" width="100%" height="300"
-            - else  
-              li= link_to l.name, l.url, target: :_blank
+            div data-link-id="#{l.id}"
+              - if l.a_gist?
+                script src="#{l.url}.js" width="100%" height="300"
+              - else  
+                li= link_to l.name, l.url, target: :_blank
+              - if current_user&.resource_author?(answer)
+                li= button_to 'Delete link', link_path(answer, link: l), remote: true, method: :delete
             
 
     - if answer.files.attached?

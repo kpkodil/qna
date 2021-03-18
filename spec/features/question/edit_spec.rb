@@ -71,12 +71,24 @@ feature 'User can edit his question', %q{
         question.files.attach(  io: File.open("#{Rails.root}/spec/rails_helper.rb"),
                                 filename: 'rails_helper.rb'
                               )
-        click_on question.title
+        question.reload
+        visit question_path(question)
         
         click_button 'Delete file'
 
         expect(page).to_not have_link 'rails_helper.rb'
-      
+      end
+
+      scenario 'with deleting links' do
+        question.links.build( linkable: question, name: "Example link", url: "http://example.url")
+        question.save
+        question.reload
+
+        click_on question.title
+        
+        click_button 'Delete link'
+
+        expect(page).to_not have_link 'Examlple link'
       end
     end
 
