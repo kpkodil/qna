@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AttachmentsController, type: :controller do
   let(:user) { create(:user) }
   let(:author) { create(:user) }
-  let(:question) { create(:question, user: user) }
+  let(:question) { create(:question, user: author) }
 
   describe 'DELETE#delete_attached_file' do
 
