@@ -8,7 +8,16 @@ feature 'User can add links to question', %q{
   given(:author) { create(:user) }
   given(:gist_url) { "https://gist.github.com/kpkodil/2fab8b5c571ba048b67d3b8dc1ca7b1f" }
 
-  scenario 'User adds link when asks question' do
+  scenario 'Unauthenticated user tries to create question with link ',js: false do
+    visit new_question_path
+
+    fill_in 'Link name', with: "My gist"
+    fill_in 'Url', with: gist_url
+
+    expect(page).to have_current_path new_user_session_path 
+  end
+
+  scenario 'User adds link when asks a question' do
     sign_in(author)    
     visit new_question_path
 
@@ -22,4 +31,25 @@ feature 'User can add links to question', %q{
 
     expect(page).to have_link 'My gist', href: gist_url
   end
+
+  scenario 'User can add another link when asks a question ', js: true do
+    sign_in(author)    
+    visit new_question_path
+    
+    fill_in 'Title', with: 'Test question'
+    fill_in 'Body', with: 'text test question'
+
+    fill_in 'Link name', with: "My gist1"
+    fill_in 'Url', with: gist_url
+
+    click_on 'add link'
+
+    within all(:css, ".nested-fields")[1] do
+      fill_in 'Link name', with: "My gist2"
+      fill_in 'Url', with: gist_url
+    end  
+    click_on 'Ask'
+
+    expect(page).to have_link 'My gist2', href: gist_url  
+  end  
 end
