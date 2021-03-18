@@ -4,4 +4,8 @@ class Link < ApplicationRecord
   validates :name,:url, presence: true
 
   validates :url, format: { with: URI::regexp }
+
+  def a_gist?
+    url.start_with?("https://gist.github.com/kpkodil/")
+  end
 end

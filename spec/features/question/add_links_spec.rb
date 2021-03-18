@@ -6,7 +6,7 @@ feature 'User can add links to question', %q{
   I'd like to be able to add links
 } do
   given(:author) { create(:user) }
-  given(:gist_url) { "https://gist.github.com/kpkodil/2fab8b5c571ba048b67d3b8dc1ca7b1f" }
+  given(:example_url)  {"http://example.com"}
 
   scenario 'User adds link when asks a question' do
     sign_in(author)    
@@ -15,12 +15,12 @@ feature 'User can add links to question', %q{
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'text test question'
 
-    fill_in 'Link name', with: "My gist"
-    fill_in 'Url', with: gist_url
+    fill_in 'Link name', with: "Example link"
+    fill_in 'Url', with: example_url
 
     click_on 'Ask'
 
-    expect(page).to have_link 'My gist', href: gist_url
+    expect(page).to have_link 'Example link', href: example_url
   end
 
   scenario 'User can add another link when asks a question ', js: true do
@@ -30,17 +30,17 @@ feature 'User can add links to question', %q{
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'text test question'
 
-    fill_in 'Link name', with: "My gist1"
-    fill_in 'Url', with: gist_url
+    fill_in 'Link name', with: "Example link"
+    fill_in 'Url', with: example_url
 
     click_on 'add link'
 
     within all(:css, ".nested-fields")[1] do
-      fill_in 'Link name', with: "My gist2"
-      fill_in 'Url', with: gist_url
+      fill_in 'Link name', with: "Example link 2"
+      fill_in 'Url', with: "http://example2.com"
     end  
     click_on 'Ask'
 
-    expect(page).to have_link 'My gist2', href: gist_url  
+    expect(page).to have_link 'Example link 2', href: "http://example2.com"
   end  
 end

@@ -7,7 +7,11 @@
         p Links:
         ul
           - answer.links.each do |l|
-            li= link_to l.name, l.url, target: :_blank
+            - if l.a_gist?
+              script src="#{l.url}.js" width="100%" height="300"
+            - else  
+              li= link_to l.name, l.url, target: :_blank
+            
 
     - if answer.files.attached?
       - answer.files.each do |file|
