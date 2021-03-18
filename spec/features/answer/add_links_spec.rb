@@ -9,7 +9,7 @@ feature 'User can add links to answer', %q{
   given!(:question) { create(:question, user: author) }
   given(:gist_url) { "https://gist.github.com/kpkodil/2fab8b5c571ba048b67d3b8dc1ca7b1f" }
 
-  scenario 'Unauthenticated user tries to create answer with link ',js: false do
+  scenario 'Unauthenticated user tries to create answer with link',js: true do
     visit question_path(question)
 
     fill_in 'Link name', with: "My gist"

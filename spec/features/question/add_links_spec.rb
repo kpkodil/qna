@@ -8,15 +8,6 @@ feature 'User can add links to question', %q{
   given(:author) { create(:user) }
   given(:gist_url) { "https://gist.github.com/kpkodil/2fab8b5c571ba048b67d3b8dc1ca7b1f" }
 
-  scenario 'Unauthenticated user tries to create question with link ',js: false do
-    visit new_question_path
-
-    fill_in 'Link name', with: "My gist"
-    fill_in 'Url', with: gist_url
-
-    expect(page).to have_current_path new_user_session_path 
-  end
-
   scenario 'User adds link when asks a question' do
     sign_in(author)    
     visit new_question_path
