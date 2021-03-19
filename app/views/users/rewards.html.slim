@@ -1,0 +1,5 @@
+ul
+  - @rewards.each do |reward| 
+    li 
+      = reward.title
+      br= image_tag(reward.image_url, size: "100x100")

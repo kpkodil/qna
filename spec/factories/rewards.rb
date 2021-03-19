@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :reward do
-    title { "Reward title" }
-    image_url { "http://image.com" }
+    sequence(:title) { |n| "Reward title#{n}" }
+    sequence(:image_url) { |n| "http://image#{n},com" }
   end
 end
