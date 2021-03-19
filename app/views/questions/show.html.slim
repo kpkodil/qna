@@ -20,8 +20,14 @@ p= @question.body
         = link_to file.filename.to_s, url_for(file), target: :_blank
         = button_to 'Delete file', attachment_path(@question, file: file), remote: true, method: :delete
 
+
 HR
-="Best answer:"
+- if @question.reward.present?
+  div class="reward"
+    = "Reward for best answer:"
+    = image_tag(@question.reward.image_url, size: "100x100")
+
+br="Best answer:"  
 - if @question.best_answer.present?
   div class="best-answer" 
     = render @question.best_answer

@@ -106,7 +106,7 @@ feature 'User can edit his question', %q{
 
           click_on question.title
 
-          within '.quesiton-links'
+          within '.question-links'
             expect(page).to_not have_link 'Examlple link'
             expect(page).to_not have_link 'Examlple link 2'
         end  
