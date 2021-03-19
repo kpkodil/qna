@@ -2,9 +2,10 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
 
-  let(:user) {create(:user) }
-  let(:author) { create(:user) }
-  let(:question) { create(:question, user: author) }
+  let!(:user) {create(:user) }
+  let!(:author) { create(:user) }
+  let!(:question) { create(:question, user: author) }
+  let!(:reward) { create(:reward, question: question) }
 
   describe 'POST #create' do
     
@@ -73,7 +74,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let!(:answer) { create(:answer, user: author, question: question) }
+    let(:answer) { create(:answer, user: author, question: question) }
     before { login(author) }
 
     context 'with valid attributes' do
@@ -106,7 +107,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #make_the_best' do
-    let!(:answer) { create(:answer, user: author, question: question) }
+    let!(:answer) { create(:answer, user: user, question: question) }
 
     context 'User is an author of the question' do
 
@@ -139,6 +140,20 @@ RSpec.describe AnswersController, type: :controller do
 
       it 're-renders make_the_best view' do
         expect(response).to render_template :make_the_best
+      end
+    end
+
+    context 'User is an author of best answer' do
+      before do 
+        login(author) 
+        patch :make_the_best, params: { id: answer }, format: :js
+        answer.reload
+        reward.reload
+        user.reload
+      end
+
+      it 'get a reward' do
+        expect(reward.user).to eq user
       end
     end
   end  

@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :reward do
-    title { "MyString" }
-    url { "MyText" }
+    title { "Reward title" }
+    image_url { "http://image.com" }
   end
 end

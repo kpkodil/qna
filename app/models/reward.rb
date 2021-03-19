@@ -9,4 +9,8 @@ class Reward < ApplicationRecord
   validates :image_url, presence: true
 
   validates :image_url, format: { with: URI::regexp }
+
+  def reward_the_user(answer_user)
+    self.user = answer_user
+  end
 end

@@ -20,7 +20,10 @@ class AnswersController < ApplicationController
 
   def make_the_best
     @prev_best_answer = @answer.question.best_answer
-    @answer.make_the_best if current_user&.resource_author?(@answer.question)
+    if current_user&.resource_author?(@answer.question)
+      @answer.make_the_best
+      answer.question.reward.reward_the_user(@answer.user) if answer.question.reward.present?
+    end  
   end
 
   private
