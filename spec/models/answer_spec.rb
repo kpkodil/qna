@@ -11,8 +11,9 @@ RSpec.describe Answer, type: :model do
   it { should accept_nested_attributes_for :links }
 
 
-  let(:author) { create(:user) }
-  let(:question) { create(:question, user: author) }
+  let!(:author) { create(:user) }
+  let!(:question) { create(:question, user: author) }
+  let!(:reward) { create(:reward, question: question) }
 
   describe "'make_the_best' method " do
     
@@ -36,6 +37,12 @@ RSpec.describe Answer, type: :model do
       answer1.reload
 
       expect(answer1).to_not be_best
+    end
+
+    it "rewards the best answer's user " do
+      answer2.make_the_best
+
+      expect(author.rewards.first).to eq reward
     end
   end
   

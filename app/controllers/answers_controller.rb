@@ -22,7 +22,6 @@ class AnswersController < ApplicationController
     @prev_best_answer = @answer.question.best_answer
     if current_user&.resource_author?(@answer.question)
       @answer.make_the_best
-      answer.question.reward.reward_the_user(@answer.user) if answer.question.reward.present?
     end  
   end
 

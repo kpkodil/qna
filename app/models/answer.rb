@@ -17,6 +17,7 @@ class Answer < ApplicationRecord
       unless best?
         question.answers.update_all(best: false)
         update!(best: true)
+        question.reward.reward_the_user(user) if question.reward.present?
       end
     end
   end
