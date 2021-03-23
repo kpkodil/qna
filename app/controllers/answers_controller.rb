@@ -7,7 +7,24 @@ class AnswersController < ApplicationController
   def create
     @answer = current_user.answers.build(answer_params)
     @answer.question = @question
-    @answer.save
+    
+    respond_to do |format|
+      if @answer.save
+        @files = Array.new
+        @answer.files.each do |f|
+          file=Hash.new
+          file[:name] = f.filename.to_s
+          file[:url] = url_for(f)
+          @files << file
+        end 
+        format.json { render json: [@answer, @answer.links, @files ] }
+      else
+        format.json do 
+          render json: @answer.errors.full_messages,
+                 status: :unprocessable_entity 
+        end
+      end
+    end
   end
 
   def update
@@ -40,6 +57,6 @@ class AnswersController < ApplicationController
   helper_method :question
 
   def answer_params
-    params.require(:answer).permit(:body, files: [], links_attributes: [:name, :url] )
+    params.require(:answer).permit(:body, files: [], links_attributes: [:name, :url, :_destroy] )
   end
 end

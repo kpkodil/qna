@@ -6,4 +6,32 @@ $(document).on('turbolinks:load', function() {
     const answerId = $(this).data('answerId')
     $('form#edit-answer-' + answerId).removeClass('hidden')
   })
+
+  $('form.new-answer').on('ajax:success', function(e) {
+    console.log(e)
+    let answer = e.detail[0][0]
+    let links = e.detail[0][1]
+    let files = e.detail[0][2]
+
+    console.log(files)
+
+    $('.answers').append('<p>' + answer.body + '</p>')
+    $.each(links, function(index, link) {
+      $('.answers').append('<br><a href=' + link.url + ' target=_blank >' + link.name + '</a>')
+    })
+    $.each(files, function(index, file) {
+      $('.answers').append('<br><a href=' + file.url + ' target=_blank >' + file.name + '</a>')
+    })
+    
+  })
+    .on('ajax:error', function(e) {
+      let errors = e.detail[0]
+
+      $('.answer-errors').append('<p>error(s):</p>')
+      $.each(errors, function(index, value) {
+        $('.answer-errors').append('<p>' + value + '</p>')
+      })
+        
+    })
+    
 });

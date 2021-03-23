@@ -12,30 +12,32 @@ RSpec.describe AnswersController, type: :controller do
     before { login(author) }
 
     it 'associated with question' do
-      post :create, params: valid_answer_params, format: :js
+      post :create, params: valid_answer_params, format: :json
       expect(assigns(:answer).question).to eq question
     end
 
     context 'with valid attributes' do
 
       it 'saves a new answer in the database' do
-        expect { post :create, params: valid_answer_params, format: :js }.to change(question.answers, :count).by(1)
+        expect { post :create, params: valid_answer_params, format: :json }.to change(question.answers, :count).by(1)
       end
 
-      it 'redirects to question show view ' do
-        post :create, params: valid_answer_params, format: :js
-        expect(response).to render_template(:create)
-      end
+      it 'gets response status 200' do
+        post :create, params: valid_answer_params, format: :json
+        
+        expect(response.status).to eq(200)
+      end    
     end
 
     context 'with invalid attributes' do
       it 'does not save the answer' do
-        expect { post :create, params: invalid_answer_params, format: :js }.to_not change(Answer, :count)
+        expect { post :create, params: invalid_answer_params, format: :json }.to_not change(Answer, :count)
       end
 
-      it 'renders create view' do
-        post :create, params: invalid_answer_params, format: :js
-        expect(response).to render_template(:create)
+      it 'gets response status 422' do
+        post :create, params: invalid_answer_params, format: :json
+    
+        expect(response.status).to eq(422)
       end
     end
   end
