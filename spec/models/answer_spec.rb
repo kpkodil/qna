@@ -1,10 +1,14 @@
 require 'rails_helper'
+require 'spec_helper'
+require Rails.root.join "spec/concerns/votable_spec.rb"
 
 RSpec.describe Answer, type: :model do
   it { should belong_to :user }
   it { should belong_to :question }
 
   it { should have_many(:links).dependent(:destroy) }
+  
+  it_behaves_like "votable"
 
   it { should validate_presence_of :body }
 

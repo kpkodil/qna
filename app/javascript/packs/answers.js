@@ -8,13 +8,9 @@ $(document).on('turbolinks:load', function() {
   })
 
   $('form.new-answer').on('ajax:success', function(e) {
-    console.log(e)
-    let answer = e.detail[0][0]
-    let links = e.detail[0][1]
-    let files = e.detail[0][2]
-
-    console.log(files)
-
+    let answer = e.detail[0].answer
+    let links = e.detail[0].links
+    let files = e.detail[0].files
     $('.answers').append('<p>' + answer.body + '</p>')
     $.each(links, function(index, link) {
       $('.answers').append('<br><a href=' + link.url + ' target=_blank >' + link.name + '</a>')
@@ -25,13 +21,13 @@ $(document).on('turbolinks:load', function() {
     
   })
     .on('ajax:error', function(e) {
+  
       let errors = e.detail[0]
+    
 
       $('.answer-errors').append('<p>error(s):</p>')
       $.each(errors, function(index, value) {
         $('.answer-errors').append('<p>' + value + '</p>')
-      })
-        
+      })      
     })
-    
 });

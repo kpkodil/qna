@@ -1,4 +1,6 @@
 class AnswersController < ApplicationController
+  
+  include Voted
 
   before_action :authenticate_user!, only: %i[create update destroy]
   before_action :question, only: %i[create destroy]
@@ -17,7 +19,8 @@ class AnswersController < ApplicationController
           file[:url] = url_for(f)
           @files << file
         end 
-        format.json { render json: [@answer, @answer.links, @files ] }
+        # format.json { render json: [@answer, @answer.links, @files ] }
+        format.json { render json: { answer: @answer, links: @answer.links, files: @files } }
       else
         format.json do 
           render json: @answer.errors.full_messages,

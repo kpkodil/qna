@@ -1,4 +1,7 @@
 class Question < ApplicationRecord
+
+  include Votable
+
   belongs_to :user
 
   has_one :reward, dependent: :destroy

@@ -1,6 +1,13 @@
 - if answer.persisted?
-  div data-answer-id="#{answer.id}"
+
+  div class="answer-id-#{answer.id}" data-answer-id="#{answer.id}"
     p= answer.body
+
+    div data-answer-errors="#{answer.id}"
+
+    p= "Answer rating:"
+
+    = render "shared/votes", votable: answer
 
     .answer-links
       - if answer.links.present?
@@ -21,8 +28,6 @@
         div data-attached-file-id="#{file.id}"
           p= link_to file.filename.to_s, url_for(file), target: :_blank
           = button_to 'Delete file', attachment_path(answer, file: file), remote: true, method: :delete
-
-    div data-answer-errors="#{answer.id}"
     
     - if !answer.best? && current_user&.resource_author?(answer.question)
       br= link_to 'Make the best', make_the_best_answer_path(answer), remote: true, method: :patch      

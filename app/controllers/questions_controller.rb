@@ -1,5 +1,7 @@
 class QuestionsController < ApplicationController
 
+  include Voted
+  
   before_action :authenticate_user!, except: %i[index show create update deestroy ]
   before_action :question, only: %i[show new update destroy delete_attached_file]
 

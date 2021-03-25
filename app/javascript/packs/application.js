@@ -11,6 +11,7 @@ import "jquery"
 import "@nathanvda/cocoon"
 import "./answers.js"
 import "./questions.js"
+import "utils/votes.js"
 
 Rails.start()
 Turbolinks.start()

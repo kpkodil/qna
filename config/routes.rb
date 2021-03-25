@@ -8,8 +8,16 @@ Rails.application.routes.draw do
     get :rewards, on: :member
   end
 
-  resources :questions do
-    resources :answers, shallow: true, only: %i[create update destroy] do
+  concern :votable do
+    member do
+      post :vote_for
+      post :vote_against
+      delete :delete_vote
+    end
+  end
+
+  resources :questions, concerns: :votable do
+    resources :answers, concerns: :votable, shallow: true, only: %i[create update destroy] do
       patch "make_the_best", on: :member
     end
   end

@@ -1,0 +1,12 @@
+- if votable.present?
+  .rating
+    = votable.rating
+
+  .rating-errors
+   
+  p class="vote #{vote_hidden(votable)}"
+    = link_to "+1", polymorphic_path(votable, action: 'vote_for'), remote: true, method: :post, data: { type: :json }
+    = " | "
+    = link_to "-1", polymorphic_path(votable, action: 'vote_against'), remote: true, method: :post, data: { type: :json }
+  p class="delete-vote #{delete_vote_hidden(votable)}"
+    = link_to "delete vote", polymorphic_path(votable, action: 'delete_vote'), remote: true, method: :delete, data: { type: :json }
