@@ -8,9 +8,10 @@ $(document).on('turbolinks:load', function() {
   })
 
   $('form.new-answer').on('ajax:success', function(e) {
-    let answer = e.detail[0].answer
-    let links = e.detail[0].links
-    let files = e.detail[0].files
+    let data = e.detail[0]
+    let answer = data.answer
+    let links = data.links
+    let files = data.files
     $('.answers').append('<p>' + answer.body + '</p>')
     $.each(links, function(index, link) {
       $('.answers').append('<br><a href=' + link.url + ' target=_blank >' + link.name + '</a>')
@@ -21,9 +22,8 @@ $(document).on('turbolinks:load', function() {
     
   })
     .on('ajax:error', function(e) {
-  
-      let errors = e.detail[0]
-    
+      
+      let errors = e.detail[0]    
 
       $('.answer-errors').append('<p>error(s):</p>')
       $.each(errors, function(index, value) {

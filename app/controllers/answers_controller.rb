@@ -12,14 +12,7 @@ class AnswersController < ApplicationController
     
     respond_to do |format|
       if @answer.save
-        @files = Array.new
-        @answer.files.each do |f|
-          file=Hash.new
-          file[:name] = f.filename.to_s
-          file[:url] = url_for(f)
-          @files << file
-        end 
-        # format.json { render json: [@answer, @answer.links, @files ] }
+        set_files(@answer)
         format.json { render json: { answer: @answer, links: @answer.links, files: @files } }
       else
         format.json do 
@@ -61,5 +54,15 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body, files: [], links_attributes: [:name, :url, :_destroy] )
+  end
+
+  def set_files(answer)
+    @files = Array.new
+    @answer.files.map do |f|
+      file=Hash.new
+      file[:name] = f.filename.to_s
+      file[:url] = url_for(f)
+      @files << file
+    end
   end
 end
