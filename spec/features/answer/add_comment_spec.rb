@@ -14,7 +14,7 @@ feature 'User can add comments to answer', %q{
   scenario 'Unauthenticated user tries to create comment',js: true do
     visit question_path(question)
     within(".answer-id-#{answer.id}") do
-      expect(page).to_not have_field("Your comment")
+      expect(page).to_not have_button("Comment")
     end
   end
 
@@ -38,6 +38,32 @@ feature 'User can add comments to answer', %q{
         fill_in 'Your comment', with: ''
         click_on "Comment"
         expect(page).to have_content("error(s)")
+      end
+    end
+  end
+
+  describe 'multiple sessions', js: true do
+    scenario "comment appears on another user's page" do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        within '.answers' do
+          fill_in :comment_body, with: "TestComment"
+          click_on 'Comment'
+    
+          expect(page).to have_content "TestComment"
+        end
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content "TestComment"
       end
     end
   end

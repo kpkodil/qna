@@ -39,4 +39,29 @@ feature 'User can add comments to question', %q{
       end
     end
   end
+  describe 'multiple sessions', js: true do
+    scenario "comment appears on another user's page" do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        within '.question' do
+          fill_in :comment_body, with: "TestComment"
+          click_on 'Comment'
+    
+          expect(page).to have_content "TestComment"
+        end
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content "TestComment"
+      end
+    end
+  end
 end

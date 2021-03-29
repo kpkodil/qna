@@ -12,7 +12,7 @@ $(document).on('turbolinks:load', function() {
       // Called when the subscription is ready for use on the server
       // console.log(consumer)
       // console.log(consumer.subscriptions)
-      console.log('Connected to question_' + questionId )
+      console.log('Connected to question_' + questionId + '/answers' )
     },
 
     disconnected() {

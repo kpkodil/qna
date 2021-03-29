@@ -3,6 +3,8 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!, only: %i[ create ]
   before_action :commentable,        only: %i[ create ]
 
+  after_action :publish_comment, only: %i[create]
+
   def create
     respond_to do |format|
       @comment = current_user.comments.build(comment_params)
@@ -28,5 +30,22 @@ class CommentsController < ApplicationController
 
   def comment_params
     params.require(:comment).permit(:body)
+  end
+
+  def question_id
+    if params[:question_id]
+      @commentable.id 
+    elsif params[:answer_id]
+      @commentable.question.id
+    end
+  end
+
+  def publish_comment
+    return if @comment.errors.any?
+    ActionCable.server.broadcast( 
+      "question_#{question_id}/comments", 
+      { comment: @comment
+      } 
+    )
   end
 end
