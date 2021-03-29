@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   
   devise_for :users
 
+  mount ActionCable.server =>'/cable'
+
   resources :users, only: %i[] do
     get :rewards, on: :member
   end

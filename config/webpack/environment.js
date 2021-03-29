@@ -8,5 +8,8 @@ environment.plugins.prepend('Provide',
   })
 )
 
-module.exports = environment
+const handlebars = require('./loaders/handlebars')
 
+environment.loaders.prepend('handlebars', handlebars)
+
+ module.exports = environment

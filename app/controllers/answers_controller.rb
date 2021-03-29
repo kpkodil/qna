@@ -6,6 +6,8 @@ class AnswersController < ApplicationController
   before_action :question, only: %i[create destroy]
   before_action :answer, only: %i[update destroy make_the_best delete_attached_file]
 
+  after_action :publish_answer, only: %i[create]
+
   def create
     @answer = current_user.answers.build(answer_params)
     @answer.question = @question
@@ -62,7 +64,31 @@ class AnswersController < ApplicationController
       file=Hash.new
       file[:name] = f.filename.to_s
       file[:url] = url_for(f)
+      file[:id] = f.id
       @files << file
     end
+  end
+
+  def set_links
+    @links = Array.new
+    @answer.links.each do |l|
+      link=Hash.new
+      link[:name] = l.name
+      link[:url] = l.url
+      link[:id] = l.id
+      @links << link
+    end
+  end
+
+  def publish_answer
+    set_links
+    return if @answer.errors.any?
+    ActionCable.server.broadcast( 
+      "question_#{params[:question_id]}/answers", 
+      { answer: @answer,
+        links: @links,
+        files: @files
+      } 
+    )
   end
 end
