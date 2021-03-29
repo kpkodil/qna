@@ -5,8 +5,6 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show create update deestroy ]
   before_action :question, only: %i[show new update destroy delete_attached_file]
 
-  # after_action :set_gon,only: %i[create]
-
   after_action :publish_question, only: %i[create]
 
 
@@ -22,6 +20,7 @@ class QuestionsController < ApplicationController
   def show
     @answer = Answer.new
     @answer.links.build
+    @comment = @question.comments.build(user: current_user)
   end
   
   def create

@@ -18,8 +18,10 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :questions, concerns: :votable do
-    resources :answers, concerns: :votable, shallow: true, only: %i[create update destroy] do
+  resources :questions, concerns: %i[ votable ] do
+    resources :comments,shallow: true, only: %i[create]
+    resources :answers, concerns: %i[ votable ], shallow: true, only: %i[create update destroy] do
+      resources :comments,shallow: true, only: %i[create]
       patch "make_the_best", on: :member
     end
   end

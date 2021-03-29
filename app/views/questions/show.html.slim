@@ -24,7 +24,9 @@
   p= "Question rating:"
   
   = render "shared/votes", votable: @question
-
+  = render "comments/comments", commentable: @question
+  = render "comments/new", commentable: @question
+s
 
 HR
 - if @question.reward.present?

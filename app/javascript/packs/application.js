@@ -12,6 +12,7 @@ import "@nathanvda/cocoon"
 import "./answers.js"
 import "./questions.js"
 import "utils/votes.js"
+import "./comments.js"
 
 Rails.start()
 Turbolinks.start()

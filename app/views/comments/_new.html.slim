@@ -1,0 +1,8 @@
+- if current_user.present?
+.comment-errors
+- if commentable.present?
+  = form_with model: [commentable, @comment], class: "new-comment", local: false, data: { type: :json } do |f|
+    p
+      br= f.label :body, "Your comment"
+      = f.text_field :body  
+    = f.submit 'Comment'

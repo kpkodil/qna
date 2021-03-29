@@ -16,10 +16,6 @@ $(document).on('turbolinks:load', function() {
 
     received(data) {
       if (gon.user_id != data.question.user_id ) {
-        // console.log('rendering!')
-        // console.log(data)
-        // let question = template(data)
-        // $('.questions')[0].append(question).hide().fadeIn()
         const Handlebars = require("handlebars");
         let source = "<div data-question-id='{{{ question.id }}}'> <p><a href='{{{ question_path }}}'> {{{ question.title }}} </p> </div>"
         let resource = Handlebars.compile(source);
