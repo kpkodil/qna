@@ -36,7 +36,7 @@ class CommentsController < ApplicationController
     if params[:question_id]
       @commentable.id 
     elsif params[:answer_id]
-      @commentable.question.id
+      @commentable.question_id
     end
   end
 

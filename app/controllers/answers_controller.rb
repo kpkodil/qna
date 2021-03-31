@@ -59,7 +59,7 @@ class AnswersController < ApplicationController
   end
 
   def set_files(answer)
-    @files = Array.new
+    @files = []
     @answer.files.map do |f|
       file=Hash.new
       file[:name] = f.filename.to_s
@@ -70,13 +70,11 @@ class AnswersController < ApplicationController
   end
 
   def set_links
-    @links = Array.new
-    @answer.links.each do |l|
-      link=Hash.new
-      link[:name] = l.name
-      link[:url] = l.url
-      link[:id] = l.id
-      @links << link
+    @answer.links.map do |l|
+      { name: l.name,
+        url: l.url,
+        id: l.id 
+      }
     end
   end
 
@@ -86,7 +84,7 @@ class AnswersController < ApplicationController
     ActionCable.server.broadcast( 
       "question_#{params[:question_id]}/answers", 
       { answer: @answer,
-        links: @links,
+        links: @answer.links,
         files: @files
       } 
     )
