@@ -4,10 +4,10 @@ class QuestionsController < ApplicationController
   
   before_action :authenticate_user!, except: %i[index show create update deestroy ]
   before_action :question, only: %i[show new update destroy delete_attached_file]
+  
+  authorize_resource
 
   after_action :publish_question, only: %i[create]
-
-  authorize_resource 
 
   def new
     @question.links.build
@@ -41,8 +41,6 @@ class QuestionsController < ApplicationController
     if current_user.resource_author?(@question)
       @question.destroy
       redirect_to questions_path, notice: "Question was successfully destroyed."
-    else
-      redirect_to question_path(@question), notice: "You are not author of this Question!"
     end
   end
 

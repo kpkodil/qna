@@ -3,6 +3,8 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!, only: %i[ create ]
   before_action :commentable,        only: %i[ create ]
 
+  authorize_resource
+  
   after_action :publish_comment, only: %i[create]
 
   def create

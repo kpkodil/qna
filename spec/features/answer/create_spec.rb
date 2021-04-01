@@ -48,7 +48,7 @@ feature 'User can create answer for question', %q{
     fill_in 'answer_body', with: 'Answer'
     click_on 'Answer the question'
     
-    expect(page).to have_current_path new_user_session_path
+    expect(page).to have_current_path root_path
   end
 
   context 'multiple session', js: true do

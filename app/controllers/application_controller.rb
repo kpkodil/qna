@@ -2,6 +2,8 @@ class ApplicationController < ActionController::Base
 
   before_action :gon_user, unless: :devise_controller?
 
+  check_authorization unless: :devise_controller?
+
   private 
 
   def gon_user
@@ -11,6 +13,4 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exeption|
     redirect_to root_url, alert: exeption.message
   end
-
-  check_authorization
 end

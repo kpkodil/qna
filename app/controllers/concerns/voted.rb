@@ -4,13 +4,14 @@ module Voted
   included do
     before_action :authenticate_user!, only: %i[ vote_for vote_against delete_vote ]
     before_action :votable,            only: %i[ vote_for vote_against delete_vote ]
+    authorize_resource
   end
 
-  def vote_for    
+  def vote_for
     create_vote(1)
   end
 
-  def vote_against    
+  def vote_against
     create_vote(-1)
   end
 
@@ -43,5 +44,9 @@ module Voted
         end
       end  
     end
+  end
+
+  def authorize_vote
+    authorize! @votable
   end
 end

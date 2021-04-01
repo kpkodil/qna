@@ -5,5 +5,4 @@ h1= 'Questions list'
   ol= render @questions
 
 .questions-errors
-- if can?(:create, Question)
-  p= link_to 'Ask question', new_question_path
+p= link_to 'Ask question', new_question_path

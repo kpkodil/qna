@@ -36,10 +36,10 @@ RSpec.describe LinksController, type: :controller do
         expect { delete :destroy, params: { id: question, link: question.links.first }, format: :js }.to_not change(question.links, :count)
       end
 
-      it 're-renders destroy view' do
+      it 'redirects to root path' do
         delete :destroy, params: { id: question, link: question.links.first }, format: :js 
 
-        expect(response).to render_template :destroy
+        expect(response).to redirect_to root_path
       end
     end
   end

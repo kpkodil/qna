@@ -6,6 +6,8 @@ class AnswersController < ApplicationController
   before_action :question, only: %i[create destroy]
   before_action :answer, only: %i[update destroy make_the_best delete_attached_file]
 
+  authorize_resource
+  
   after_action :publish_answer, only: %i[create]
 
   def create

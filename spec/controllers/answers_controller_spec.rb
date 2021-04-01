@@ -71,9 +71,9 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(Answer, :count)
       end
 
-      it 're-renders destroy view' do
+      it 'redirects to root path' do
         delete :destroy, params: { id: answer }, format: :js
-        expect(response).to render_template :destroy
+        expect(response).to redirect_to root_path
       end
     end
   end
@@ -143,8 +143,8 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.best).to eq false  
       end
 
-      it 're-renders make_the_best view' do
-        expect(response).to render_template :make_the_best
+      it 'redirects to root path' do
+        expect(response).to redirect_to root_path 
       end
     end
 

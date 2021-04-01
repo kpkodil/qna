@@ -39,10 +39,10 @@ RSpec.describe AttachmentsController, type: :controller do
         expect { delete :destroy, params: { id: answer, file: answer.files.all.first }, format: :js }.to_not change(answer.files.all, :count)
       end
 
-      it 're-renders destroy view' do
+      it 'redirects to root path' do
         delete :destroy, params: { id: answer, file: answer.files.all.first }, format: :js 
 
-        expect(response).to render_template :destroy
+        expect(response).to redirect_to root_path
       end
     end
   end
