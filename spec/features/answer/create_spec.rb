@@ -48,7 +48,7 @@ feature 'User can create answer for question', %q{
     fill_in 'answer_body', with: 'Answer'
     click_on 'Answer the question'
     
-    expect(page).to have_current_path root_path
+    expect(page).to have_content "You need to sign in or sign up before continuing." 
   end
 
   context 'multiple session', js: true do

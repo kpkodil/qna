@@ -39,11 +39,11 @@ RSpec.describe AttachmentsController, type: :controller do
         expect { delete :destroy, params: { id: answer, file: answer.files.all.first }, format: :js }.to_not change(answer.files.all, :count)
       end
 
-      it 'redirects to root path' do
+      it 'gets response status 403' do
         delete :destroy, params: { id: answer, file: answer.files.all.first }, format: :js 
-
-        expect(response).to redirect_to root_path
-      end
+        
+        expect(response.status).to eq(403)
+      end  
     end
   end
 end

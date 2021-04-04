@@ -17,7 +17,7 @@ feature 'User can add links to answer', %q{
 
     click_on 'Answer the question'
 
-    expect(page).to have_content("You are not authorized to access this page.")
+    expect(page).to have_content("You need to sign in or sign up before continuing.")
   end
 
   scenario 'User adds link when give an answer', js: true do

@@ -71,10 +71,11 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(Answer, :count)
       end
 
-      it 'redirects to root path' do
+      it 'gets response status 403' do
         delete :destroy, params: { id: answer }, format: :js
-        expect(response).to redirect_to root_path
-      end
+        
+        expect(response.status).to eq(403)
+      end  
     end
   end
 
@@ -143,9 +144,9 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.best).to eq false  
       end
 
-      it 'redirects to root path' do
-        expect(response).to redirect_to root_path 
-      end
+      it 'gets response status 403' do
+        expect(response.status).to eq(403)
+      end  
     end
 
     context 'User is an author of best answer' do

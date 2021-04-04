@@ -4,18 +4,20 @@ module Voted
   included do
     before_action :authenticate_user!, only: %i[ vote_for vote_against delete_vote ]
     before_action :votable,            only: %i[ vote_for vote_against delete_vote ]
-    authorize_resource
   end
 
   def vote_for
+    authorize! :vote_for, @votable
     create_vote(1)
   end
 
   def vote_against
+    authorize! :vote_against, @votable
     create_vote(-1)
   end
 
   def delete_vote
+    authorize! :delete_vote, @votable
     respond_to do |format|
       @votable.votes.find_by(user: current_user)&.destroy
       format.json { render json:  { rating: @votable.rating } }
@@ -44,9 +46,5 @@ module Voted
         end
       end  
     end
-  end
-
-  def authorize_vote
-    authorize! @votable
   end
 end

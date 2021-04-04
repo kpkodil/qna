@@ -31,20 +31,26 @@ class Ability
     can :rewards,  User,                                      { user_id: user.id }
 
     can :destroy, Link do |link|
-      link.linkable.user_id == user.id 
+      user.resource_author?(link.linkable) 
     end
 
     can :make_the_best, Answer do |answer|
-      answer.question.user_id == user.id
+      user.resource_author?(answer.question) 
     end
 
     can :destroy, ActiveStorage::Attachment do |attachment|
-      attachment.record.user_id == user.id
+      user.resource_author?(attachment.record)
     end
 
-    can %i[vote_for vote_against delete_vote],  
-          [Question, Answer] do |resource| 
-            resource.user_id != user.id 
-          end
+    can :vote_for, [Question, Answer] do |resource| 
+      !user.resource_author?(resource) 
+    end
+    can :vote_against, [Question, Answer] do |resource| 
+      !user.resource_author?(resource) 
+    end
+
+    can :delete_vote, [Question, Answer] do |resource|
+      resource.votes.find_by(user_id: user.id)
+    end  
   end
 end

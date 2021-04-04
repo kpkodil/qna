@@ -134,6 +134,8 @@ RSpec.describe Ability, type: :model do
         it { should_not be_able_to :vote_for, user_question }
       end
       
+      let!(:vote) { create(:vote, vote_value: 1, user_id: user.id, votable: other_question) }
+
       context '#delete_vote' do
         it { should be_able_to :delete_vote, other_question }
       end
