@@ -140,5 +140,10 @@ RSpec.describe Ability, type: :model do
         it { should be_able_to :delete_vote, other_question }
       end
     end
+    context 'API' do
+      context '#me' do
+        it { should be_able_to :me, user}
+      end
+    end
   end
 end

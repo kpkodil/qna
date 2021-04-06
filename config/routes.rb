@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  use_doorkeeper
   root to:'questions#index'
   
   devise_for :users
@@ -31,5 +32,13 @@ Rails.application.routes.draw do
   resources :attachments, only: %i[destroy]
 
   resources :links, only: %i[destroy]
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: %i[] do
+        get :me, on: :collection
+      end
+    end
+  end
 
 end

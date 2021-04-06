@@ -93,6 +93,8 @@ GEM
     diff-lcs (1.4.4)
     digest-crc (0.6.3)
       rake (>= 12.0.0, < 14.0.0)
+    doorkeeper (5.5.0)
+      railties (>= 5)
     erubi (1.10.0)
     factory_bot (6.1.0)
       activesupport (>= 5.0.0)
@@ -372,6 +374,7 @@ DEPENDENCIES
   capybara (>= 3.26)
   cocoon
   devise
+  doorkeeper
   factory_bot_rails
   gon
   google-cloud-storage (~> 1.8)
