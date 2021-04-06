@@ -38,6 +38,8 @@ Rails.application.routes.draw do
       resources :profiles, only: %i[] do
         get :me, on: :collection
       end
+      
+      resources :questions, only: %i[index]
     end
   end
 
