@@ -146,10 +146,10 @@ RSpec.describe Ability, type: :model do
       end
 
       context 'Questions' do
-        it { should be_able_to %i[new index show create answers], user}  
+        it { should be_able_to %i[new index show create update answers], user}  
       end
       context 'Answers' do
-        it { should be_able_to %i[new show create], user}  
+        it { should be_able_to %i[new show create update], user}  
       end
     end
   end

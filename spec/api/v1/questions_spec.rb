@@ -2,12 +2,11 @@ require 'rails_helper'
 require Rails.root.join "spec/shared/api_authorization.rb"
 
 describe 'Questions API', type: :request do
+  let(:user) { create(:user) }
+  let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+
   let(:headers) { { "CONTENT_TYPE" => "application/json",
                       "ACCEPT" => "application/json" } }
-
-  let(:access_token) { create(:access_token) }
-
-  let(:user) { create(:user) }
 
   let!(:questions) { create_list(:question, 2, user: user) }
 
@@ -145,8 +144,9 @@ describe 'Questions API', type: :request do
   end
 
   context 'api/v1/questions/question_id' do
+    let(:api_path) { "/api/v1/questions/#{question_id}" }
+
     describe 'GET' do
-      let(:api_path) { "/api/v1/questions/#{question_id}" }
       let!(:comments) { create_list(:comment, 3, commentable: question, user: user) }
       let!(:links) { create_list(:link, 4, linkable: question) }
       let(:question_json) { json['question'] }
@@ -218,5 +218,49 @@ describe 'Questions API', type: :request do
         end
       end
     end
+
+  describe 'PATCH' do
+    let(:headers) { { "ACCEPT" => "application/json" } }
+    
+    let!(:new_title) { "NewQuesitonTitle" }
+    let!(:new_body) { "NewQuesitonBody" }
+
+    let(:link1) { {id: 0, name: "link_name", url: "http://link.com"} } 
+
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :patch }
+    end
+
+    context 'authorized' do
+
+      context 'with valid attributes' do
+        before do 
+          patch api_path, params: { access_token: access_token.token,
+                                    question: { title: new_title, body: new_body, links: [link1] } },
+                                    headers: headers
+        end
+
+        it 'returns 200 status' do
+          expect(response).to be_successful
+        end   
+
+        it 'changes question attributes' do
+          patch api_path, params: { access_token: access_token.token, question: { title: new_title, body: new_body, links: [link1] } }, headers: headers 
+          question.reload
+          expect(question.body).to eq new_body
+        end
+      end
+
+      context 'with invalid attributes' do
+
+        it 'does not change answer attributes' do
+          expect do
+            patch api_path, params: { access_token: access_token.token, question: { title: '', body: '', links: [link1] } }, headers: headers 
+          end.to_not change(question, :title)
+        end
+      end
+    end
+  end      
   end
 end

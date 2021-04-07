@@ -1,6 +1,6 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
 
-  before_action :set_question, only: %i[new show answers]
+  before_action :set_question, only: %i[new show answers update]
 
   def new
     @question.links.build
@@ -24,6 +24,15 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     @question = current_resource_owner.questions.build(question_params)
     if @question.save
       render json: @question, serializer: QuestionSerializer, status: :created
+    end
+  end
+
+  def update
+
+    authorize! :update, current_resource_owner
+    if current_resource_owner.resource_author?(@question)
+      @question.update(question_params) 
+      render json: @question, serializer: QuestionSerializer, status: 200
     end
   end
 

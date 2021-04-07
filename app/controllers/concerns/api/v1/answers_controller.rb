@@ -1,6 +1,6 @@
 class Api::V1::AnswersController < Api::V1::BaseController
 
-  before_action :set_answer, only: %i[show create]
+  before_action :set_answer, only: %i[show create update]
   before_action :set_question, only: %i[create]
 
   def show
@@ -14,6 +14,14 @@ class Api::V1::AnswersController < Api::V1::BaseController
     authorize! :create, current_resource_owner
     if @answer.save
       render json: @answer, serializer: AnswerSerializer, status: :created
+    end
+  end
+
+  def update
+    authorize! :update, current_resource_owner
+    if current_resource_owner.resource_author?(@answer)
+      @answer.update(answer_params) 
+      render json: @answer, serializer: AnswerSerializer, status: 200
     end
   end
 

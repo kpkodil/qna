@@ -2,16 +2,18 @@ require 'rails_helper'
 require Rails.root.join "spec/shared/api_authorization.rb"
 
 describe 'Answers API', type: :request do
-  let(:headers) { { "CONTENT_TYPE" => "application/json",
+  let(:user) { create(:user)}
+
+  let!(:headers) { { "CONTENT_TYPE" => "application/json",
                       "ACCEPT" => "application/json" } }
 
-  let(:access_token) { create(:access_token) }
+  let!(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
-  let(:user) { create(:user) }
-  let(:question) { create(:question, user: user) }
-  let(:answer) { create(:answer, question: question, user: user) }
-  let(:answer_id) { answer.id }
-  let(:question_id) { question.id }
+  
+  let!(:question) { create(:question, user: user) }
+  let!(:answer) { create(:answer, question: question, user: user) }
+  let!(:answer_id) { answer.id }
+  let!(:question_id) { question.id }
 
 
   describe 'GET api/v1/answers/answer_id' do
@@ -122,6 +124,50 @@ describe 'Answers API', type: :request do
       
         it 'do not save a new answer in the database' do
           expect { post api_path, params: { access_token: access_token.token, answer: { body: "", links: [link1] } }, headers: headers }.to_not change(Answer, :count)
+        end
+      end
+    end
+  end
+
+  describe 'PATCH' do
+    let(:headers) { { "ACCEPT" => "application/json" } }
+    let(:api_path) { "/api/v1/answers/#{answer_id}" }
+    
+    let!(:new_body) { "NewAnswerBody" }
+
+    let(:link1) { {id: 0, name: "link_name", url: "http://link.com"} } 
+
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :patch }
+    end
+
+    context 'authorized' do
+
+      context 'with valid attributes' do
+        before do 
+          patch api_path, params: { access_token: access_token.token,
+                                    answer: { body: new_body, links: [link1] } },
+                                    headers: headers
+        end
+
+        it 'returns 200 status' do
+          expect(response).to be_successful
+        end   
+
+        it 'changes answer attributes' do
+          patch api_path, params: { access_token: access_token.token, answer: { body: new_body,links: [link1] } }, headers: headers 
+          answer.reload
+          expect(answer.body).to eq new_body
+        end
+      end
+
+      context 'with invalid attributes' do
+
+        it 'does not change answer attributes' do
+          expect do
+            patch api_path, params: { access_token: access_token.token, answer: { body: '', links: [link1] } }, headers: headers 
+          end.to_not change(answer, :body)
         end
       end
     end
