@@ -40,7 +40,9 @@ Rails.application.routes.draw do
         get :others, on: :collection
       end
 
-      resources :questions, only: %i[index]
+      resources :questions, only: %i[index] do
+        get :answers, on: :member
+      end
     end
   end
 

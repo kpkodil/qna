@@ -147,6 +147,14 @@ RSpec.describe Ability, type: :model do
       context '#others' do
         it { should be_able_to :others, user}
       end
+
+      context 'Questions#index' do
+        it { should be_able_to :index, user}
+      end
+
+      context 'Questions#answers' do
+        it { should be_able_to :answers, user}
+      end
     end
   end
 end

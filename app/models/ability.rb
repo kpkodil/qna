@@ -56,5 +56,9 @@ class Ability
     can %i[me others], User do |profile|
       profile.id == user.id
     end
+
+    can %i[index answers], User do |profile|
+      profile.id == user.id
+    end
   end
 end
