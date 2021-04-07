@@ -144,6 +144,9 @@ RSpec.describe Ability, type: :model do
       context '#me' do
         it { should be_able_to :me, user}
       end
+      context '#others' do
+        it { should be_able_to :others, user}
+      end
     end
   end
 end

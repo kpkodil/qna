@@ -52,8 +52,8 @@ class Ability
     can :delete_vote, [Question, Answer] do |resource|
       resource.votes.find_by(user_id: user.id)
     end  
-
-    can :me, User do |profile|
+    
+    can %i[me others], User do |profile|
       profile.id == user.id
     end
   end
