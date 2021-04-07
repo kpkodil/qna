@@ -11,9 +11,10 @@ describe 'Answers API', type: :request do
   let(:question) { create(:question, user: user) }
   let(:answer) { create(:answer, question: question, user: user) }
   let(:answer_id) { answer.id }
+  let(:question_id) { question.id }
 
 
-describe 'GET api/v1/answers/answer_id' do
+  describe 'GET api/v1/answers/answer_id' do
     let(:api_path) { "/api/v1/answers/#{answer_id}" }
     let!(:comments) { create_list(:comment, 3, commentable: answer, user: user) }
     let!(:links) { create_list(:link, 4, linkable: answer) }
@@ -82,6 +83,38 @@ describe 'GET api/v1/answers/answer_id' do
 
         it 'returns file url' do
           expect(file_json).to eq rails_blob_url(file, only_path: true)
+        end
+      end
+    end
+  end
+
+  describe 'POST' do
+    let(:headers) { { "ACCEPT" => "application/json" } }
+    let(:api_path) { "/api/v1/questions/#{question_id}/answers" }
+
+    let(:body) { "AnswerBody" }
+    let(:link1) { {id: 0, name: "link_name", url: "http://link.com"} } 
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :post }
+    end
+
+    context 'authorized' do
+
+      context 'with valid attributes' do
+    
+        before do 
+          post api_path, params: { access_token: access_token.token,
+                                   answer: { body: body } },
+                                    headers: headers
+        end
+
+        it 'returns 200 status' do
+          expect(response).to be_successful
+        end    
+
+        it 'saves a new question in the database' do
+          expect { post api_path, params: { access_token: access_token.token, answer: { body: body, links: [link1] } }, headers: headers }.to change(Answer, :count).by(1)
         end
       end
     end

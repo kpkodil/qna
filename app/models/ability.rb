@@ -57,7 +57,7 @@ class Ability
       profile.id == user.id
     end
 
-    can %i[index show answers], User do |profile|
+    can %i[index new create show answers], User do |profile|
       profile.id == user.id
     end
   end

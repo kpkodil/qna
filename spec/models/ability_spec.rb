@@ -141,19 +141,15 @@ RSpec.describe Ability, type: :model do
       end
     end
     context 'API' do
-      context '#me' do
-        it { should be_able_to :me, user}
-      end
-      context '#others' do
-        it { should be_able_to :others, user}
+      context 'Profiles' do
+        it { should be_able_to %i[me others], user}  
       end
 
-      context 'Questions#index' do
-        it { should be_able_to :index, user}
+      context 'Questions' do
+        it { should be_able_to %i[new index show create answers], user}  
       end
-
-      context 'Questions#answers' do
-        it { should be_able_to :answers, user}
+      context 'Answers' do
+        it { should be_able_to %i[new show create], user}  
       end
     end
   end
