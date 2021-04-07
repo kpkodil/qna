@@ -100,6 +100,12 @@ describe 'Questions API', type: :request do
             expect { post api_path, params: { access_token: access_token.token, question: { title: body, body: body, links: [link1] } }, headers: headers }.to change(Question, :count).by(1)
           end
         end
+
+        context 'with invalid attributes' do
+          it 'do not save a new question in the database' do
+            expect { post api_path, params: { access_token: access_token.token, question: { title: '', body: body, links: [link1] } }, headers: headers }.to_not change(Question, :count)
+          end
+        end
       end
     end
   end

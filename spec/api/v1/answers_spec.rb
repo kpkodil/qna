@@ -113,8 +113,15 @@ describe 'Answers API', type: :request do
           expect(response).to be_successful
         end    
 
-        it 'saves a new question in the database' do
+        it 'saves a new answer in the database' do
           expect { post api_path, params: { access_token: access_token.token, answer: { body: body, links: [link1] } }, headers: headers }.to change(Answer, :count).by(1)
+        end
+      end
+      
+      context 'with invalid attributes' do
+      
+        it 'do not save a new answer in the database' do
+          expect { post api_path, params: { access_token: access_token.token, answer: { body: "", links: [link1] } }, headers: headers }.to_not change(Answer, :count)
         end
       end
     end
