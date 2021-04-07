@@ -1,4 +1,5 @@
 require 'rails_helper'
+require Rails.root.join "spec/shared/api_authorization.rb"
 
 describe 'Questions API', type: :request do
   let(:headers) { { "CONTENT_TYPE" => "application/json",
@@ -133,7 +134,6 @@ describe 'Questions API', type: :request do
         let(:link_json) { links_json.first }
 
         it 'returns list of links' do
-          # byebug
           expect(links_json.size).to eq 4
         end
 
