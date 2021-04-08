@@ -24,6 +24,8 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     @question = current_resource_owner.questions.build(question_params)
     if @question.save
       render json: @question, serializer: QuestionSerializer, status: :created
+    else
+      render json: { message: @question.errors.full_messages }, status: 400
     end
   end
 
@@ -31,8 +33,11 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
     authorize! :update, current_resource_owner
     if current_resource_owner.resource_author?(@question)
-      @question.update(question_params) 
-      render json: @question, serializer: QuestionSerializer, status: 200
+      if @question.update(question_params) 
+        render json: @question, serializer: QuestionSerializer, status: 200
+      else
+        render json: { message: @question.errors.full_messages }, status: 400
+      end
     end
   end
 

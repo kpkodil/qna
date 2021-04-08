@@ -14,14 +14,19 @@ class Api::V1::AnswersController < Api::V1::BaseController
     authorize! :create, current_resource_owner
     if @answer.save
       render json: @answer, serializer: AnswerSerializer, status: :created
+    else
+      render json: { message: @answer.errors.full_messages }, status: 400
     end
   end
 
   def update
     authorize! :update, current_resource_owner
     if current_resource_owner.resource_author?(@answer)
-      @answer.update(answer_params) 
-      render json: @answer, serializer: AnswerSerializer, status: 200
+      if @answer.update(answer_params) 
+        render json: @answer, serializer: AnswerSerializer, status: 200
+      else
+        render json: { message: @answer.errors.full_messages }, status: 400
+      end
     end
   end
 

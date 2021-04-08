@@ -101,6 +101,12 @@ describe 'Questions API', type: :request do
         end
 
         context 'with invalid attributes' do
+
+          it 'returns 400 status' do
+            post api_path, params: { access_token: access_token.token, question: { title: '', body: '', links: [link1] } }, headers: headers 
+            expect(response.status).to eq 400
+          end 
+
           it 'do not save a new question in the database' do
             expect { post api_path, params: { access_token: access_token.token, question: { title: '', body: body, links: [link1] } }, headers: headers }.to_not change(Question, :count)
           end
@@ -253,6 +259,11 @@ describe 'Questions API', type: :request do
         end
 
         context 'with invalid attributes' do
+
+          it 'returns 400 status' do
+            patch api_path, params: { access_token: access_token.token, question: { title: '', body: '', links: [link1] } }, headers: headers 
+            expect(response.status).to eq 400
+          end 
 
           it 'does not change answer attributes' do
             expect do

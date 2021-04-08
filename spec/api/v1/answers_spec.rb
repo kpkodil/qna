@@ -121,7 +121,12 @@ describe 'Answers API', type: :request do
       end
       
       context 'with invalid attributes' do
-      
+          
+        it 'returns 400 status' do
+          post api_path, params: { access_token: access_token.token, answer: { body: '', links: [link1] } }, headers: headers 
+          expect(response.status).to eq 400
+        end       
+
         it 'do not save a new answer in the database' do
           expect { post api_path, params: { access_token: access_token.token, answer: { body: "", links: [link1] } }, headers: headers }.to_not change(Answer, :count)
         end
@@ -163,6 +168,11 @@ describe 'Answers API', type: :request do
       end
 
       context 'with invalid attributes' do
+
+        it 'returns 400 status' do
+          patch api_path, params: { access_token: access_token.token, answer: { body: '', links: [link1] } }, headers: headers
+          expect(response.status).to eq 400
+        end  
 
         it 'does not change answer attributes' do
           expect do
