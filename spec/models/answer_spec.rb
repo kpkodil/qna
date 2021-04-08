@@ -55,6 +55,4 @@ RSpec.describe Answer, type: :model do
       expect(author.rewards.first).to eq reward
     end
   end
-  
-
 end
