@@ -1,9 +1,9 @@
 require 'rails_helper'
-require Rails.root.join "spec/shared/api_authorization.rb"
-require Rails.root.join "spec/shared/api_deleteable.rb"
-require Rails.root.join "spec/shared/api_postable.rb"
-require Rails.root.join "spec/shared/api_updatable.rb"
-require Rails.root.join "spec/shared/api_showable.rb"
+require Rails.root.join "spec/shared/api/api_authorization.rb"
+require Rails.root.join "spec/shared/api/api_deleteable.rb"
+require Rails.root.join "spec/shared/api/api_postable.rb"
+require Rails.root.join "spec/shared/api/api_updatable.rb"
+require Rails.root.join "spec/shared/api/api_showable.rb"
 
 describe 'Questions API', type: :request do
   let(:user) { create(:user) }

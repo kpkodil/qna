@@ -1,5 +1,5 @@
 require 'rails_helper'
-require Rails.root.join "spec/shared/api_authorization.rb"
+require Rails.root.join "spec/shared/api/api_authorization.rb"
 
 describe 'Profiles API', type: :request do
   let(:headers) { { "CONTENT_TYPE" => "application/json",
