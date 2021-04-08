@@ -219,48 +219,87 @@ describe 'Questions API', type: :request do
       end
     end
 
-  describe 'PATCH' do
-    let(:headers) { { "ACCEPT" => "application/json" } }
-    
-    let!(:new_title) { "NewQuesitonTitle" }
-    let!(:new_body) { "NewQuesitonBody" }
+    describe 'PATCH' do
+      let(:headers) { { "ACCEPT" => "application/json" } }
+      
+      let!(:new_title) { "NewQuesitonTitle" }
+      let!(:new_body) { "NewQuesitonBody" }
 
-    let(:link1) { {id: 0, name: "link_name", url: "http://link.com"} } 
+      let(:link1) { {id: 0, name: "link_name", url: "http://link.com"} } 
 
 
-    it_behaves_like 'API Authorizable' do
-      let(:method) { :patch }
-    end
-
-    context 'authorized' do
-
-      context 'with valid attributes' do
-        before do 
-          patch api_path, params: { access_token: access_token.token,
-                                    question: { title: new_title, body: new_body, links: [link1] } },
-                                    headers: headers
-        end
-
-        it 'returns 200 status' do
-          expect(response).to be_successful
-        end   
-
-        it 'changes question attributes' do
-          patch api_path, params: { access_token: access_token.token, question: { title: new_title, body: new_body, links: [link1] } }, headers: headers 
-          question.reload
-          expect(question.body).to eq new_body
-        end
+      it_behaves_like 'API Authorizable' do
+        let(:method) { :patch }
       end
 
-      context 'with invalid attributes' do
+      context 'authorized' do
 
-        it 'does not change answer attributes' do
-          expect do
-            patch api_path, params: { access_token: access_token.token, question: { title: '', body: '', links: [link1] } }, headers: headers 
-          end.to_not change(question, :title)
+        context 'with valid attributes' do
+          before do 
+            patch api_path, params: { access_token: access_token.token,
+                                      question: { title: new_title, body: new_body, links: [link1] } },
+                                      headers: headers
+          end
+
+          it 'returns 200 status' do
+            expect(response).to be_successful
+          end   
+
+          it 'changes question attributes' do
+            patch api_path, params: { access_token: access_token.token, question: { title: new_title, body: new_body, links: [link1] } }, headers: headers 
+            question.reload
+            expect(question.body).to eq new_body
+          end
+        end
+
+        context 'with invalid attributes' do
+
+          it 'does not change answer attributes' do
+            expect do
+              patch api_path, params: { access_token: access_token.token, question: { title: '', body: '', links: [link1] } }, headers: headers 
+            end.to_not change(question, :title)
+          end
         end
       end
     end
-  end      
+
+    describe 'DELETE' do
+      let(:headers) { { "ACCEPT" => "application/json" } }
+      let(:api_path) { "/api/v1/questions/#{question_id}" }
+      
+
+      it_behaves_like 'API Authorizable' do
+        let(:method) { :delete }
+      end
+
+      context 'authorized' do
+
+        context 'User is an author of the question' do
+
+          it 'returns 200 status' do
+            delete api_path, params: { access_token: access_token.token }, headers: headers
+            expect(response).to be_successful
+          end   
+
+          it 'delete the question from the database' do
+            expect{ delete api_path, params: { access_token: access_token.token }, headers: headers }.to change(Question, :count).by(-1)
+          end
+        end
+
+        context 'User is not an author of the question' do
+          let(:other) { create(:user) }
+          let!(:access_token) { create(:access_token, resource_owner_id: other.id) }
+
+          it 'returns 400 status' do
+            delete api_path, params: { access_token: access_token.token }, headers: headers
+            expect(response.status).to eq 400
+          end  
+
+          it 'does not delete the question from the database' do
+            expect { delete api_path, params: { access_token: access_token.token }, headers: headers }.to_not change(Question, :count)
+          end
+        end
+      end
+    end
   end
 end

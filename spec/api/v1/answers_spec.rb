@@ -172,4 +172,43 @@ describe 'Answers API', type: :request do
       end
     end
   end
+
+  describe 'DELETE' do
+    let(:headers) { { "ACCEPT" => "application/json" } }
+    let(:api_path) { "/api/v1/answers/#{answer_id}" }
+    
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :delete }
+    end
+
+    context 'authorized' do
+
+      context 'User is an author of the answer' do
+
+        it 'returns 200 status' do
+          delete api_path, params: { access_token: access_token.token }, headers: headers
+          expect(response).to be_successful
+        end   
+
+        it 'delete the answer from the database' do
+          expect{ delete api_path, params: { access_token: access_token.token }, headers: headers }.to change(Answer, :count).by(-1)
+        end
+      end
+
+      context 'User is not an author of the answer' do
+        let(:other) { create(:user) }
+        let!(:access_token) { create(:access_token, resource_owner_id: other.id) }
+
+        it 'returns 400 status' do
+          delete api_path, params: { access_token: access_token.token }, headers: headers
+          expect(response.status).to eq 400
+        end  
+
+        it 'does not delete the answer from the database' do
+          expect { delete api_path, params: { access_token: access_token.token }, headers: headers }.to_not change(Answer, :count)
+        end
+      end
+    end
+  end
 end

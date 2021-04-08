@@ -1,6 +1,6 @@
 class Api::V1::AnswersController < Api::V1::BaseController
 
-  before_action :set_answer, only: %i[show create update]
+  before_action :set_answer, only: %i[show create update destroy]
   before_action :set_question, only: %i[create]
 
   def show
@@ -22,6 +22,16 @@ class Api::V1::AnswersController < Api::V1::BaseController
     if current_resource_owner.resource_author?(@answer)
       @answer.update(answer_params) 
       render json: @answer, serializer: AnswerSerializer, status: 200
+    end
+  end
+
+  def destroy
+    authorize! :destroy, current_resource_owner
+    if current_resource_owner.resource_author?(@answer)
+      @answer.destroy
+      render json: { message: 'answer was successfully deleted'}, status: 200
+    else
+      render json: { message: 'answer was not deleted'}, status: 400
     end
   end
 

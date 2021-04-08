@@ -1,6 +1,6 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
 
-  before_action :set_question, only: %i[new show answers update]
+  before_action :set_question, only: %i[new show answers update destroy]
 
   def new
     @question.links.build
@@ -33,6 +33,16 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     if current_resource_owner.resource_author?(@question)
       @question.update(question_params) 
       render json: @question, serializer: QuestionSerializer, status: 200
+    end
+  end
+
+  def destroy
+    authorize! :destroy, current_resource_owner
+    if current_resource_owner.resource_author?(@question)
+      @question.destroy
+      render json: { message: 'question was successfully deleted'}, status: 200
+    else
+      render json: { message: 'question was not deleted'}, status: 400
     end
   end
 
