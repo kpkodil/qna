@@ -11,7 +11,7 @@ describe 'Answers API', type: :request do
   let!(:headers) { { "CONTENT_TYPE" => "application/json",
                       "ACCEPT" => "application/json" } }
 
-  let!(:access_token) { create(:access_token, resource_owner_id: user.id) }
+  let(:access_token) { create(:access_token, resource_owner_id: user.id) }
 
   
   let!(:question) { create(:question, user: user) }

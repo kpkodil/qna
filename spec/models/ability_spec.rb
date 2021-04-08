@@ -144,13 +144,6 @@ RSpec.describe Ability, type: :model do
       context 'Profiles' do
         it { should be_able_to %i[me others], user}  
       end
-
-      context 'Questions/Answers' do
-        it { should be_able_to %i[new index show create update destroy], user}  
-      end
-      context 'Questions' do
-        it { should be_able_to %i[answers], user}  
-      end
     end
   end
 end

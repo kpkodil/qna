@@ -57,8 +57,6 @@ class Ability
       profile.id == user.id
     end
 
-    can %i[index new create update show destroy answers], User do |profile|
-      profile.id == user.id
-    end
+    can :answers, Question 
   end
 end

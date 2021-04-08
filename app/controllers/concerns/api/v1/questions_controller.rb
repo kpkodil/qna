@@ -3,24 +3,25 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   before_action :set_question, only: %i[new show answers update destroy]
 
   def new
+    authorize! :new, Question
     @question.links.build
     @question.build_reward
-    authorize! :new, current_resource_owner
   end
 
   def index
+    authorize! :index, Question
     @questions = Question.all
-    authorize! :index, current_resource_owner
+    
     render json: @questions, each_serializer: QuestionsSerializer
   end
 
   def show
-    authorize! :show, current_resource_owner
+    authorize! :show, @question
     render json: @question, serializer: QuestionSerializer            
   end
 
   def create
-    authorize! :create, current_resource_owner
+    authorize! :create, Question
     @question = current_resource_owner.questions.build(question_params)
     if @question.save
       render json: @question, serializer: QuestionSerializer, status: :created
@@ -30,8 +31,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def update
-
-    authorize! :update, current_resource_owner
+    authorize! :update, @question
     if current_resource_owner.resource_author?(@question)
       if @question.update(question_params) 
         render json: @question, serializer: QuestionSerializer, status: 200
@@ -42,18 +42,16 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def destroy
-    authorize! :destroy, current_resource_owner
+    authorize! :destroy, @question
     if current_resource_owner.resource_author?(@question)
       @question.destroy
       render json: { message: 'question was successfully deleted'}, status: 200
-    else
-      render json: { message: 'question was not deleted'}, status: 400
     end
   end
 
   def answers
+    authorize! :answers, @question
     @answers = @question.answers
-    authorize! :index, current_resource_owner
     render json: @answers, each_serializer: AnswerSerializer
   end
 

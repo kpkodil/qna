@@ -4,14 +4,16 @@ class Api::V1::AnswersController < Api::V1::BaseController
   before_action :set_question, only: %i[create]
 
   def show
-    authorize! :show, current_resource_owner
+    authorize! :show, @question
     render json: @answer, serializer: AnswerSerializer            
   end
 
   def create
+    authorize! :create, Answer
+
     @answer = current_resource_owner.answers.build(answer_params)
     @answer.question = @question
-    authorize! :create, current_resource_owner
+    
     if @answer.save
       render json: @answer, serializer: AnswerSerializer, status: :created
     else
@@ -20,7 +22,7 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   def update
-    authorize! :update, current_resource_owner
+    authorize! :update, @answer
     if current_resource_owner.resource_author?(@answer)
       if @answer.update(answer_params) 
         render json: @answer, serializer: AnswerSerializer, status: 200
@@ -31,12 +33,9 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   def destroy
-    authorize! :destroy, current_resource_owner
-    if current_resource_owner.resource_author?(@answer)
-      @answer.destroy
+    authorize! :destroy, @answer
+    if @answer.destroy
       render json: { message: 'answer was successfully deleted'}, status: 200
-    else
-      render json: { message: 'answer was not deleted'}, status: 400
     end
   end
 
