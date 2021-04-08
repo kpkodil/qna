@@ -1,6 +1,8 @@
 require 'rails_helper'
 require 'spec_helper'
-require Rails.root.join "spec/concerns/votable_spec.rb"
+require Rails.root.join "spec/shared/models/votable.rb"
+require Rails.root.join "spec/shared/models/commentable.rb"
+require Rails.root.join "spec/shared/models/attachable.rb"
 
 RSpec.describe Question, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
@@ -9,6 +11,9 @@ RSpec.describe Question, type: :model do
 
   it_behaves_like "votable"
   it_behaves_like "commentable"
+  it_behaves_like "Attachable" do
+    let(:resource_class) { "Answer".constantize }
+  end
   
   it { should validate_presence_of :title }
   it { should validate_presence_of :body }
@@ -22,9 +27,5 @@ RSpec.describe Question, type: :model do
     answer = create(:answer, best: true, user: author, question: question)
 
     expect(question.best_answer).to eq answer
-  end
-
-  it 'have many attached files' do
-    expect(Question.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
 end
