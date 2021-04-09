@@ -33,9 +33,8 @@ class Api::V1::AnswersController < Api::V1::BaseController
 
   def destroy
     authorize! :destroy, @answer
-    if @answer.destroy
-      render json: { message: 'answer was successfully deleted'}
-    end
+    @answer.destroy
+    render json: { message: 'answer was successfully deleted'}
   end
 
   private
