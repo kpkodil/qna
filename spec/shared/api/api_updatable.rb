@@ -17,9 +17,9 @@ shared_examples_for "API Updatable" do
 
     context 'with invalid attributes' do
 
-      it 'returns 400 status' do
+      it 'returns 422 status' do
         update_resource(resource, new_body="", new_links, new_title)
-        expect(response.status).to eq 400
+        expect(response.status).to eq 422
       end  
 
       it 'does not change resource attributes' do

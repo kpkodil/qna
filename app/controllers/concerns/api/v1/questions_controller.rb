@@ -26,23 +26,23 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     if @question.save
       render json: @question, serializer: QuestionSerializer, status: :created
     else
-      render json: { message: @question.errors.full_messages }, status: 400
+      render json: { message: @question.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def update
     authorize! :update, @question
     if @question.update(question_params) 
-      render json: @question, serializer: QuestionSerializer, status: 200
+      render json: @question, serializer: QuestionSerializer
     else
-      render json: { message: @question.errors.full_messages }, status: 400
+      render json: { message: @question.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def destroy
     authorize! :destroy, @question
     if @question.destroy
-      render json: { message: 'question was successfully deleted'}, status: 200
+      render json: { message: 'question was successfully deleted'}
     end
   end
 

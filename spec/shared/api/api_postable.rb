@@ -14,9 +14,9 @@ shared_examples_for "API Postable" do
     
     context 'with invalid attributes' do
         
-      it 'returns 400 status' do
+      it 'returns 422 status' do
         post_resource(resource, body="", links, title)
-        expect(response.status).to eq 400
+        expect(response.status).to eq 422
       end       
 
       it 'do not save a new resource in the database' do
