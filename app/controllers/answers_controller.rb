@@ -28,18 +28,16 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update(answer_params) if current_user.resource_author?(@answer)
+    @answer.update(answer_params)
   end
 
   def destroy
-    @answer.destroy if current_user.resource_author?(@answer)
+    @answer.destroy
   end
 
   def make_the_best
     @prev_best_answer = @answer.question.best_answer
-    if current_user&.resource_author?(@answer.question)
-      @answer.make_the_best
-    end  
+    @answer.make_the_best
   end
 
   private

@@ -23,12 +23,11 @@ class Api::V1::AnswersController < Api::V1::BaseController
 
   def update
     authorize! :update, @answer
-    if current_resource_owner.resource_author?(@answer)
-      if @answer.update(answer_params) 
-        render json: @answer, serializer: AnswerSerializer, status: 200
-      else
-        render json: { message: @answer.errors.full_messages }, status: 400
-      end
+    
+    if @answer.update(answer_params) 
+      render json: @answer, serializer: AnswerSerializer, status: 200
+    else
+      render json: { message: @answer.errors.full_messages }, status: 400
     end
   end
 

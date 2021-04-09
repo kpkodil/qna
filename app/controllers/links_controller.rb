@@ -6,7 +6,7 @@ class LinksController < ApplicationController
   authorize_resource
 
   def destroy
-    @link.destroy if current_user.resource_author?(@link.linkable)
+    @link.destroy
   end
 
   private

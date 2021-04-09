@@ -34,14 +34,12 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.update(question_params) if current_user.resource_author?(@question)
+    @question.update(question_params) 
   end
 
   def destroy
-    if current_user.resource_author?(@question)
-      @question.destroy
-      redirect_to questions_path, notice: "Question was successfully destroyed."
-    end
+    @question.destroy
+    redirect_to questions_path, notice: "Question was successfully destroyed."
   end
 
   private

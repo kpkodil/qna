@@ -32,19 +32,16 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   def update
     authorize! :update, @question
-    if current_resource_owner.resource_author?(@question)
-      if @question.update(question_params) 
-        render json: @question, serializer: QuestionSerializer, status: 200
-      else
-        render json: { message: @question.errors.full_messages }, status: 400
-      end
+    if @question.update(question_params) 
+      render json: @question, serializer: QuestionSerializer, status: 200
+    else
+      render json: { message: @question.errors.full_messages }, status: 400
     end
   end
 
   def destroy
     authorize! :destroy, @question
-    if current_resource_owner.resource_author?(@question)
-      @question.destroy
+    if @question.destroy
       render json: { message: 'question was successfully deleted'}, status: 200
     end
   end
