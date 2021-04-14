@@ -28,4 +28,13 @@ RSpec.describe Question, type: :model do
 
     expect(question.best_answer).to eq answer
   end
+
+  describe 'reputation' do
+    let(:question) { build(:question, user: author) }
+    
+    it "calls ReputationJob" do
+      expect(ReputationJob).to receive(:perform_later).with(question)
+      question.save!
+    end
+  end
 end
