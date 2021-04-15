@@ -1,6 +1,6 @@
 class DailyDigestMailer < ApplicationMailer
-  def digest(user, questions)
-    @today_questions = questions
+  def digest(user, today_questions)
+    @today_questions = today_questions
 
     mail to: user.email,
          template_path: 'mailers/daily_digest'
