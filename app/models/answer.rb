@@ -16,6 +16,8 @@ class Answer < ApplicationRecord
 
   validate :best_answers_count
 
+  after_create :notificate_question_author
+
   def make_the_best
     Answer.transaction do
       unless best?
@@ -30,5 +32,11 @@ class Answer < ApplicationRecord
     if question.present? && question.answers.where(best: true).count >= 1 && best? && question.best_answer != self
       errors.add(:best, "It must be only one best answer for any question.")
     end
+  end
+
+  private
+
+  def notificate_question_author
+    NewAnswerJob.perform_later(question.user, question, self)
   end
 end
