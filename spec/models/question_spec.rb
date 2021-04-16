@@ -8,6 +8,7 @@ RSpec.describe Question, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:links).dependent(:destroy) }
   it { should have_one(:reward).dependent(:destroy) }
+  it { should have_many(:subscribes).dependent(:destroy) }
 
   it_behaves_like "votable"
   it_behaves_like "commentable"

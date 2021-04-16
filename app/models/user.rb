@@ -14,6 +14,8 @@ class User < ApplicationRecord
 
   has_many :comments, dependent: :destroy
 
+  has_many :subscribes, dependent: :destroy
+
   def resource_author?(resource)
     resource.user_id == id    
   end
