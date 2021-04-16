@@ -24,6 +24,8 @@ class Question < ApplicationRecord
 
   after_create :calculate_reputation
 
+  scope :today, -> {where("DATE(created_at) = ? ", Date.today)}
+
   private
 
   def calculate_reputation
