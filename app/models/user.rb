@@ -19,4 +19,8 @@ class User < ApplicationRecord
   def resource_author?(resource)
     resource.user_id == id    
   end
+
+  def subscriber_of?(question)
+    question.subscribes.find_by(user_id: id).present?
+  end
 end

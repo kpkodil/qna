@@ -25,10 +25,10 @@ class Ability
 
   def user_abilities
     guest_abilities
-    can :create,  [Question, Answer, Comment, Link]
-    can :update,  [Question, Answer],                         { user_id: user.id }
-    can :destroy, [Question, Answer, Comment],                { user_id: user.id }
-    can :rewards,  User,                                      { user_id: user.id }
+    can :create,  [Question, Answer, Comment, Link, Subscribe]
+    can :update,  [Question, Answer],                           { user_id: user.id }
+    can :destroy, [Question, Answer, Comment, Subscribe],       { user_id: user.id }
+    can :rewards,  User,                                        { user_id: user.id }
 
     can :destroy, Link do |link|
       user.resource_author?(link.linkable) 

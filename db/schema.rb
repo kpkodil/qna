@@ -145,8 +145,8 @@ ActiveRecord::Schema.define(version: 2021_04_16_063708) do
   end
 
   create_table "subscribes", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "question_id", null: false
+    t.bigint "user_id"
+    t.bigint "question_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["question_id"], name: "index_subscribes_on_question_id"

@@ -22,6 +22,7 @@ class QuestionsController < ApplicationController
     @answer = Answer.new
     @answer.links.build
     @comment = @question.comments.build(user: current_user)
+    @subscribe = @question.subscribes.find_by(user: current_user)
   end
   
   def create

@@ -19,4 +19,17 @@ RSpec.describe User, type: :model do
   it "User is not an owner of resource" do
     expect(user).not_to be_resource_author(question)
   end
+
+  describe "#subscriber_of?" do
+    let(:subscribe) { create(:subscribe, user: user, question: question) }
+    let(:unsubscriber) { create(:user) }
+
+    it "User is a aubscriber of question" do
+      expect(user).not_to be_subscriber_of(question)
+    end
+
+    it "User is an unsubscriber of question" do
+      expect(unsubscriber).not_to be_subscriber_of(question)
+    end
+  end
 end

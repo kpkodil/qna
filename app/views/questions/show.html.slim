@@ -2,6 +2,12 @@
   h1= @question.title
   p= @question.body
 
+  .subscribe
+    - if current_user&.subscriber_of?(@question)
+      p= button_to "Unsubscribe", subscribe_path(@subscribe), method: :delete
+    - else
+      p= button_to "Subscribe", question_subscribes_path(@question), method: :post
+
   .question-links
     - if @question.links.present?
       p Links:

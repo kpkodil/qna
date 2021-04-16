@@ -140,6 +140,21 @@ RSpec.describe Ability, type: :model do
         it { should be_able_to :delete_vote, other_question }
       end
     end
+
+    context 'subscribes' do
+      let(:question) { create(:question, user: user) }
+      let(:user_subscribe)  { create(:subscribe, question: question, user: user) }
+      let(:other_subscribe) { create(:subscribe, question: question, user: other) }      
+
+      context '#create' do
+        it { should be_able_to :create, Subscribe }
+      end
+
+      context '#destroy' do
+        it { should     be_able_to :destroy, user_subscribe }
+        it { should_not be_able_to :destroy, other_subscribe }
+      end
+    end
     context 'API' do
       context 'Profiles' do
         it { should be_able_to %i[me others], user}  
