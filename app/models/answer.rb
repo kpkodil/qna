@@ -16,7 +16,7 @@ class Answer < ApplicationRecord
 
   validate :best_answers_count
 
-  after_create :notificate_question_author
+  after_create :notificate_question_subscribers
 
   def make_the_best
     Answer.transaction do
@@ -36,7 +36,11 @@ class Answer < ApplicationRecord
 
   private
 
-  def notificate_question_author
-    NewAnswerJob.perform_later(question.user, question, self)
+  def notificate_question_subscribers
+    subscribers = []
+    question.subscribes.each do |subscribe|
+      subscriber << subscribe.user
+    end  
+    NewAnswerJob.perform_later(subscribers, question, self)
   end
 end
