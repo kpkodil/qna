@@ -1,11 +1,14 @@
 class NewAnswerMailer < ApplicationMailer
-  def notificate(subscriber, question, new_answer)
-    byebug
-    @subscriber = subscriber
-    @question = question
+  def notificate(new_answer)
+    
+    @question = new_answer.question
     @new_answer = new_answer
+    @subscribers = @question.subscribers
 
-    mail to: @subscriber.email,
-       template_path: 'mailers/new_answer'
+    @subscribers.each do |subscriber|
+      @subscriber = subscriber
+      mail to: @subscriber.email,
+         template_path: 'mailers/new_answer'
+     end
   end
 end

@@ -20,7 +20,7 @@ RSpec.describe SubscribesController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let!(:subscribe) { create(:subscribe, user: user, question: question) }
+    let!(:subscribe) { create(:subscribe, subscriber: user, question: question) }
 
     before do
       login(user)

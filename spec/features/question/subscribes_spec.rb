@@ -33,7 +33,7 @@ feature 'Authenticated user can subscribe to current question', %q{
     context 'as a subscriber' do
 
       before do
-        create(:subscribe, user: user, question: question)
+        create(:subscribe, subscriber: user, question: question)
       end
 
       scenario 'can not subscribe to the question' do

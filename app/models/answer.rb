@@ -37,10 +37,6 @@ class Answer < ApplicationRecord
   private
 
   def notificate_question_subscribers
-    subscribers = []
-    question.subscribes.each do |subscribe|
-      subscriber << subscribe.user
-    end  
-    NewAnswerJob.perform_later(subscribers, question, self)
+    NewAnswerJob.perform_later(self)
   end
 end

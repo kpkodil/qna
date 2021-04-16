@@ -143,8 +143,8 @@ RSpec.describe Ability, type: :model do
 
     context 'subscribes' do
       let(:question) { create(:question, user: user) }
-      let(:user_subscribe)  { create(:subscribe, question: question, user: user) }
-      let(:other_subscribe) { create(:subscribe, question: question, user: other) }      
+      let(:user_subscribe)  { create(:subscribe, question: question, subscriber: user) }
+      let(:other_subscribe) { create(:subscribe, question: question, subscriber: other) }      
 
       context '#create' do
         it { should be_able_to :create, Subscribe }

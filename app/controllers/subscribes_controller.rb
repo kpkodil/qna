@@ -5,7 +5,7 @@ class SubscribesController < ApplicationController
   authorize_resource 
 
   def create
-    @subscribe = current_user.subscribes.build(question: @question)
+    @subscribe = @question.subscribes.build(subscriber: current_user)
     if @subscribe.save
       redirect_to question_path(@question)
     end

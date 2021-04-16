@@ -15,6 +15,6 @@ RSpec.describe NewAnswerJob, type: :job do
 
   it 'NewAnswerService#send_notification' do
     expect(service).to receive(:send_notification)
-    NewAnswerJob.perform_now(subscribers, question, new_answer)
+    NewAnswerJob.perform_now(new_answer)
   end
 end
